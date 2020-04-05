@@ -1,53 +1,57 @@
 import React from 'react';
-import { Image, Animated } from 'react-native';
+import { Image, Animated, StyleSheet } from 'react-native';
 import { View, Text, Card } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Cat } from '../types';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 interface Props {
   cat: Cat;
 }
 
-const CatCard: React.FC<Props> = ({ cat }) => {
-  const [loaded, setLoaded] = React.useState(false);
-  const [animatedValue] = React.useState(new Animated.Value(0));
-  const animation = Animated.loop(
+const createLikeAnimation = (animatedValue: Animated.Value) =>
+  Animated.sequence([
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 2000,
-    })
+      duration: 150,
+      useNativeDriver: true,
+    }),
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }),
+  ]);
+
+const CatCard: React.FC<Props> = ({ cat }) => {
+  const [loaded, setLoaded] = React.useState(false);
+  const [liked, setLiked] = React.useState(false);
+  const loadingAnimatedValue = React.useRef(new Animated.Value(0));
+  const likeAnimatedValue = React.useRef(new Animated.Value(0));
+  const loadingAnimation = React.useRef(
+    Animated.loop(
+      Animated.timing(loadingAnimatedValue.current, {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: true,
+      })
+    )
   );
-  animation.start();
+  const likeAnimation = React.useRef(
+    createLikeAnimation(likeAnimatedValue.current)
+  );
+
+  loadingAnimation.current.start();
 
   return (
-    <View
-      style={{
-        alignItems: 'center',
-        marginBottom: 10,
-      }}
-    >
-      <Card
-        style={{
-          alignItems: 'center',
-          height: 400,
-          width: '95%',
-          borderTopWidth: 0,
-        }}
-      >
+    <View style={styles.containter}>
+      <Card style={styles.card}>
         {!loaded && (
-          <View
-            style={{
-              borderColor: 'lightgrey',
-              backgroundColor: 'lightgrey',
-              height: '85%',
-              width: '100%',
-              position: 'absolute',
-              overflow: 'hidden',
-            }}
-          >
+          <View style={styles.loaderContainer}>
             <AnimatedLinearGradient
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -58,7 +62,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
                 borderRadius: 10,
                 transform: [
                   {
-                    translateX: animatedValue.interpolate({
+                    translateX: loadingAnimatedValue.current.interpolate({
                       inputRange: [0, 1],
                       outputRange: [-400, 400],
                     }),
@@ -71,7 +75,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
         <Image
           key={cat.id}
           onLoadEnd={() => {
-            animation.stop();
+            loadingAnimation.current.stop();
             setLoaded(true);
           }}
           source={{ uri: cat.url }}
@@ -83,24 +87,71 @@ const CatCard: React.FC<Props> = ({ cat }) => {
           }}
           resizeMode="cover"
         />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            paddingHorizontal: '7%',
-          }}
-        >
+        <View style={styles.descriptionContainer}>
           <Text>
             {cat.breeds.length > 0 ? cat.breeds[0].name : 'Unknown breed'}
           </Text>
-          <Text>Sup</Text>
+          <AnimatedIcon
+            name={liked ? 'ios-heart' : 'ios-heart-empty'}
+            color={liked ? 'red' : 'black'}
+            size={24}
+            style={{
+              transform: [
+                {
+                  scale: likeAnimatedValue.current.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 1.7],
+                  }),
+                },
+              ],
+            }}
+            onPress={() => {
+              if (!liked) {
+                setLiked(true);
+                likeAnimation.current.start(
+                  () =>
+                    (likeAnimation.current = createLikeAnimation(
+                      likeAnimatedValue.current
+                    ))
+                );
+              } else {
+                setLiked(false);
+              }
+            }}
+          />
         </View>
       </Card>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  containter: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  card: {
+    alignItems: 'center',
+    height: 400,
+    width: '95%',
+    borderTopWidth: 0,
+  },
+  loaderContainer: {
+    borderColor: 'lightgrey',
+    backgroundColor: 'lightgrey',
+    height: '85%',
+    width: '100%',
+    position: 'absolute',
+    overflow: 'hidden',
+  },
+  descriptionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: '7%',
+  },
+});
 
 export default CatCard;
