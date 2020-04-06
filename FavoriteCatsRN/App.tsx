@@ -4,6 +4,7 @@ import { AppLoading } from 'expo';
 import { loadAsync as loadExpoFont } from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
+import { FavoritedItemsContextProvider } from './context';
 import Main from './screens/Main';
 
 const App: React.FC = () => {
@@ -21,7 +22,13 @@ const App: React.FC = () => {
     setFontsLoaded(true);
   }, []);
 
-  return fontsLoaded ? <Main /> : <AppLoading />;
+  return fontsLoaded ? (
+    <FavoritedItemsContextProvider>
+      <Main />
+    </FavoritedItemsContextProvider>
+  ) : (
+    <AppLoading />
+  );
 };
 
 export default App;

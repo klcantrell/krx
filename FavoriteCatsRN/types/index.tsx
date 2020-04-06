@@ -1,11 +1,11 @@
-type Breed = {
+interface Breed {
   name: string;
-};
+}
 
-type Cat = {
+interface Cat {
   url: string;
   id: string;
   breeds: Breed[];
-};
+}
 
 export { Cat };

@@ -1,42 +1,49 @@
 import React from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
 import { Container } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { CAT_API_KEY } from '../env.json';
-import CatCard from '../components/CatCard';
+import { fetchCats, fetchFavorites } from '../api';
+import { FavoritedItemsContext } from '../context';
 import { Cat } from '../types';
+
+import CatsList from '../components/CatsList';
+import FavoritesList from '../components/FavoritesList';
+
+const Tab = createBottomTabNavigator();
 
 const Main: React.FC = () => {
   const [cats, setCats] = React.useState<Cat[]>([]);
+  const { setFavorited } = React.useContext(FavoritedItemsContext);
 
   React.useEffect(() => {
-    const fetchCats = async () => {
-      const response = await fetch(
-        'https://api.thecatapi.com/v1/images/search?limit=25&page=0',
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'x-api-key': CAT_API_KEY,
-            'Cache-Control': 'no-cache',
-          },
-        }
+    const fetchData = async () => {
+      const [catsData, favoritesData] = await Promise.all([
+        fetchCats(),
+        fetchFavorites(),
+      ]);
+      const favoritesIds = favoritesData.map((f) => f.id);
+      setCats(
+        catsData.map((c) => {
+          const favorited = favoritesIds.includes(c.id);
+          return { ...c, favorited };
+        })
       );
-      const cats = (await response.json()) as Cat[];
-      setCats(cats);
+      setFavorited(favoritesIds);
     };
-    fetchCats();
+    fetchData();
   }, []);
 
   return (
     <Container>
-      <SafeAreaView>
-        <FlatList
-          data={cats}
-          renderItem={({ item: cat }) => <CatCard cat={cat} />}
-          keyExtractor={cat => cat.id}
-        />
-      </SafeAreaView>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Cats">{() => <CatsList cats={cats} />}</Tab.Screen>
+          <Tab.Screen name="Favorites">
+            {() => <FavoritesList cats={cats} />}
+          </Tab.Screen>
+        </Tab.Navigator>
+      </NavigationContainer>
     </Container>
   );
 };

@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Cat } from '../types';
+import { FavoritedItemsContext } from '../context';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
@@ -29,7 +31,13 @@ const createLikeAnimation = (animatedValue: Animated.Value) =>
 
 const CatCard: React.FC<Props> = ({ cat }) => {
   const [loaded, setLoaded] = React.useState(false);
-  const [liked, setLiked] = React.useState(false);
+
+  const { favorited: favoritedItems, setFavorited } = React.useContext(
+    FavoritedItemsContext
+  );
+
+  const favorited = favoritedItems.includes(cat.id);
+
   const loadingAnimatedValue = React.useRef(new Animated.Value(0));
   const likeAnimatedValue = React.useRef(new Animated.Value(0));
   const loadingAnimation = React.useRef(
@@ -44,6 +52,17 @@ const CatCard: React.FC<Props> = ({ cat }) => {
   const likeAnimation = React.useRef(
     createLikeAnimation(likeAnimatedValue.current)
   );
+
+  React.useEffect(() => {
+    if (favorited) {
+      likeAnimation.current.start(
+        () =>
+          (likeAnimation.current = createLikeAnimation(
+            likeAnimatedValue.current
+          ))
+      );
+    }
+  }, [favorited]);
 
   loadingAnimation.current.start();
 
@@ -91,34 +110,37 @@ const CatCard: React.FC<Props> = ({ cat }) => {
           <Text>
             {cat.breeds.length > 0 ? cat.breeds[0].name : 'Unknown breed'}
           </Text>
-          <AnimatedIcon
-            name={liked ? 'ios-heart' : 'ios-heart-empty'}
-            color={liked ? 'red' : 'black'}
-            size={24}
+          <TouchableWithoutFeedback
             style={{
-              transform: [
-                {
-                  scale: likeAnimatedValue.current.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 1.7],
-                  }),
-                },
-              ],
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '7%',
             }}
             onPress={() => {
-              if (!liked) {
-                setLiked(true);
-                likeAnimation.current.start(
-                  () =>
-                    (likeAnimation.current = createLikeAnimation(
-                      likeAnimatedValue.current
-                    ))
-                );
-              } else {
-                setLiked(false);
+              if (!favorited) {
+                setFavorited((favoritedItems: string[]) => [
+                  cat.id,
+                  ...favoritedItems,
+                ]);
               }
             }}
-          />
+          >
+            <AnimatedIcon
+              name={favorited ? 'ios-heart' : 'ios-heart-empty'}
+              color={favorited ? 'red' : 'black'}
+              size={28}
+              style={{
+                transform: [
+                  {
+                    scale: likeAnimatedValue.current.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.7],
+                    }),
+                  },
+                ],
+              }}
+            />
+          </TouchableWithoutFeedback>
         </View>
       </Card>
     </View>
@@ -151,6 +173,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: '7%',
+    paddingRight: 0,
   },
 });
 
