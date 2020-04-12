@@ -32,11 +32,10 @@ const createLikeAnimation = (animatedValue: Animated.Value) =>
 const CatCard: React.FC<Props> = ({ cat }) => {
   const [loaded, setLoaded] = React.useState(false);
 
-  const { favorited: favoritedItems, setFavorited } = React.useContext(
-    FavoritedItemsContext
-  );
+  const { addFavorite, isFavorited } = React.useContext(FavoritedItemsContext);
 
-  const favorited = favoritedItems.includes(cat.id);
+  const favorited = isFavorited(cat.id);
+  const prevFavorited = React.useRef(favorited);
 
   const loadingAnimatedValue = React.useRef(new Animated.Value(0));
   const likeAnimatedValue = React.useRef(new Animated.Value(0));
@@ -54,7 +53,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
   );
 
   React.useEffect(() => {
-    if (favorited) {
+    if (favorited && !prevFavorited.current) {
       likeAnimation.current.start(
         () =>
           (likeAnimation.current = createLikeAnimation(
@@ -118,10 +117,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
             }}
             onPress={() => {
               if (!favorited) {
-                setFavorited((favoritedItems: string[]) => [
-                  cat.id,
-                  ...favoritedItems,
-                ]);
+                addFavorite(cat);
               }
             }}
           >

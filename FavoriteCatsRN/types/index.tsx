@@ -8,4 +8,11 @@ interface Cat {
   breeds: Breed[];
 }
 
-export { Cat };
+interface FavoriteCat {
+  image: {
+    url: string;
+  };
+  id: string;
+}
+
+export { Cat, FavoriteCat };

@@ -22,14 +22,13 @@ const Main: React.FC = () => {
         fetchCats(),
         fetchFavorites(),
       ]);
-      const favoritesIds = favoritesData.map((f) => f.id);
-      setCats(
-        catsData.map((c) => {
-          const favorited = favoritesIds.includes(c.id);
-          return { ...c, favorited };
-        })
+      console.log('favorites', favoritesData);
+      setCats(catsData);
+      setFavorited(
+        favoritesData.map(
+          (c) => ({ id: c.id, url: c.image.url, breeds: [] } as Cat)
+        )
       );
-      setFavorited(favoritesIds);
     };
     fetchData();
   }, []);

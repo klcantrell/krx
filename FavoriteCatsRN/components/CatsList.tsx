@@ -13,7 +13,7 @@ const CatsList: React.FC<Props> = ({ cats }) => (
     <FlatList
       data={cats}
       renderItem={({ item: cat }) => <CatCard cat={cat} />}
-      keyExtractor={(cat) => cat.id}
+      keyExtractor={(cat) => String(cat.id)}
     />
   </SafeAreaView>
 );

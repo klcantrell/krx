@@ -9,15 +9,15 @@ interface Props {
   cats: Cat[];
 }
 
-const FavoritesList: React.FC<Props> = ({ cats }) => {
+const FavoritesList: React.FC<Props> = () => {
   const { favorited } = React.useContext(FavoritedItemsContext);
 
   return (
     <SafeAreaView>
       <FlatList
-        data={cats.filter((c) => favorited.includes(c.id))}
+        data={favorited}
         renderItem={({ item: cat }) => <CatCard cat={cat} />}
-        keyExtractor={(cat) => cat.id}
+        keyExtractor={(cat) => String(cat.id)}
       />
     </SafeAreaView>
   );
