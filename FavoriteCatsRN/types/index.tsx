@@ -2,17 +2,25 @@ interface Breed {
   name: string;
 }
 
-interface Cat {
+interface CatEntity {
   url: string;
   id: string;
   breeds: Breed[];
 }
 
-interface FavoriteCat {
+interface Cat {
+  url: string;
+  imageId: string;
+  favoritedId: string | null;
+  breeds: Breed[];
+}
+
+interface FavoriteCatEntity {
   image: {
+    id: string;
     url: string;
   };
   id: string;
 }
 
-export { Cat, FavoriteCat };
+export { CatEntity, FavoriteCatEntity, Cat };

@@ -17,7 +17,7 @@ const FavoritesList: React.FC<Props> = () => {
       <FlatList
         data={favorited}
         renderItem={({ item: cat }) => <CatCard cat={cat} />}
-        keyExtractor={(cat) => String(cat.id)}
+        keyExtractor={(cat) => String(cat.favoritedId)}
       />
     </SafeAreaView>
   );

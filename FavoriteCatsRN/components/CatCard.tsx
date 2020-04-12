@@ -32,9 +32,11 @@ const createLikeAnimation = (animatedValue: Animated.Value) =>
 const CatCard: React.FC<Props> = ({ cat }) => {
   const [loaded, setLoaded] = React.useState(false);
 
-  const { addFavorite, isFavorited } = React.useContext(FavoritedItemsContext);
+  const { addFavorite, deleteFavorite, isFavorited } = React.useContext(
+    FavoritedItemsContext
+  );
 
-  const favorited = isFavorited(cat.id);
+  const favorited = isFavorited(cat);
   const prevFavorited = React.useRef(favorited);
 
   const loadingAnimatedValue = React.useRef(new Animated.Value(0));
@@ -91,7 +93,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
           </View>
         )}
         <Image
-          key={cat.id}
+          key={cat.imageId}
           onLoadEnd={() => {
             loadingAnimation.current.stop();
             setLoaded(true);
@@ -118,6 +120,8 @@ const CatCard: React.FC<Props> = ({ cat }) => {
             onPress={() => {
               if (!favorited) {
                 addFavorite(cat);
+              } else {
+                deleteFavorite(cat);
               }
             }}
           >

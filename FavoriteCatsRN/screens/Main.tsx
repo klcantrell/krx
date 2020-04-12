@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { fetchCats, fetchFavorites } from '../api';
-import { FavoritedItemsContext } from '../context';
+import { FavoritedItemsContext, LoadedCatsContext } from '../context';
 import { Cat } from '../types';
 
 import CatsList from '../components/CatsList';
@@ -13,7 +13,7 @@ import FavoritesList from '../components/FavoritesList';
 const Tab = createBottomTabNavigator();
 
 const Main: React.FC = () => {
-  const [cats, setCats] = React.useState<Cat[]>([]);
+  const { cats, setCats } = React.useContext(LoadedCatsContext);
   const { setFavorited } = React.useContext(FavoritedItemsContext);
 
   React.useEffect(() => {
@@ -22,11 +22,23 @@ const Main: React.FC = () => {
         fetchCats(),
         fetchFavorites(),
       ]);
-      console.log('favorites', favoritesData);
-      setCats(catsData);
+      setCats(
+        catsData.map((c) => ({
+          imageId: c.id,
+          favoritedId: null,
+          breeds: [],
+          url: c.url,
+        }))
+      );
       setFavorited(
         favoritesData.map(
-          (c) => ({ id: c.id, url: c.image.url, breeds: [] } as Cat)
+          (c) =>
+            ({
+              imageId: c.image.id,
+              favoritedId: c.id,
+              url: c.image.url,
+              breeds: [],
+            } as Cat)
         )
       );
     };
