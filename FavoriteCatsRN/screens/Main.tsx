@@ -1,12 +1,13 @@
 import React from 'react';
+import { StyleSheet, StatusBar } from 'react-native';
 import { Container } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { fetchCats, fetchFavorites } from '../api';
 import { FavoritedItemsContext, LoadedCatsContext } from '../context';
-import { Cat } from '../types';
 
+import TabLabel from '../components/TabLabel';
 import CatsList from '../components/CatsList';
 import FavoritesList from '../components/FavoritesList';
 
@@ -31,15 +32,12 @@ const Main: React.FC = () => {
         }))
       );
       setFavorited(
-        favoritesData.map(
-          (c) =>
-            ({
-              imageId: c.image.id,
-              favoritedId: c.id,
-              url: c.image.url,
-              breeds: [],
-            } as Cat)
-        )
+        favoritesData.map((c) => ({
+          imageId: c.image.id,
+          favoritedId: c.id,
+          url: c.image.url,
+          breeds: [],
+        }))
       );
     };
     fetchData();
@@ -47,10 +45,31 @@ const Main: React.FC = () => {
 
   return (
     <Container>
+      <StatusBar barStyle="dark-content" />
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Cats">{() => <CatsList cats={cats} />}</Tab.Screen>
-          <Tab.Screen name="Favorites">
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              const icon = route.name === 'Cats' ? 'cat' : 'heart-outline';
+              const tabColor = focused ? 'deeppink' : color;
+              return (
+                <TabLabel
+                  icon={icon}
+                  size={size * 1.2}
+                  color={tabColor}
+                  label={route.name}
+                />
+              );
+            },
+          })}
+          tabBarOptions={{
+            tabStyle: styles.tabBar,
+          }}
+        >
+          <Tab.Screen name="Cats" options={{ tabBarLabel: '' }}>
+            {() => <CatsList cats={cats} />}
+          </Tab.Screen>
+          <Tab.Screen name="Favorites" options={{ tabBarLabel: '' }}>
             {() => <FavoritesList cats={cats} />}
           </Tab.Screen>
         </Tab.Navigator>
@@ -58,5 +77,13 @@ const Main: React.FC = () => {
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  tabBar: {
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Main;

@@ -12,7 +12,6 @@ interface Cat {
   url: string;
   imageId: string;
   favoritedId: string | null;
-  breeds: Breed[];
 }
 
 interface FavoriteCatEntity {

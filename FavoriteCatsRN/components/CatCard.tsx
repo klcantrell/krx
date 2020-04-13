@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Animated, StyleSheet } from 'react-native';
-import { View, Text, Card } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Card } from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Cat } from '../types';
@@ -9,7 +9,7 @@ import { FavoritedItemsContext } from '../context';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
+const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
 interface Props {
   cat: Cat;
@@ -108,9 +108,6 @@ const CatCard: React.FC<Props> = ({ cat }) => {
           resizeMode="cover"
         />
         <View style={styles.descriptionContainer}>
-          <Text>
-            {cat.breeds.length > 0 ? cat.breeds[0].name : 'Unknown breed'}
-          </Text>
           <TouchableWithoutFeedback
             style={{
               justifyContent: 'center',
@@ -126,7 +123,7 @@ const CatCard: React.FC<Props> = ({ cat }) => {
             }}
           >
             <AnimatedIcon
-              name={favorited ? 'ios-heart' : 'ios-heart-empty'}
+              name={favorited ? 'heart' : 'heart-outline'}
               color={favorited ? 'red' : 'black'}
               size={28}
               style={{
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: '7%',
