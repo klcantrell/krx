@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FavoriteCats.MainPage">
+             x:Class="FavoriteCats.MainPage"
+             x:Name="mainContentPage">
     <ListView x:Name="mainListView"
               RowHeight="200"
-              ItemsSource="{Binding Cats}">
+              ItemsSource="{Binding Cats}"
+              IsPullToRefreshEnabled="True"
+              IsRefreshing="{Binding Refreshing}"
+              RefreshCommand="{Binding RefreshCommand}">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
@@ -13,6 +17,12 @@
                                Aspect="AspectFill"
                                HeightRequest="200"/>
                     </ContentView>
+                    <ViewCell.ContextActions>
+                        <MenuItem Text="Favorite"
+                                  Command="{Binding Path=BindingContext.FavoriteCommand,
+                                            Source={x:Reference mainContentPage}}"
+                                  CommandParameter="{Binding}"/>
+                    </ViewCell.ContextActions>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>

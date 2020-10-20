@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using FavoriteCats.ViewModel;
 using Xamarin.Forms;
 
 namespace FavoriteCats
 {
-    public partial class MainPage : ContentPage
+    public partial class FavoritesPage : ContentPage
     {
-        private MainVM viewModel;
+        private FavoritesVM viewModel;
 
-        public MainPage(MainVM viewModel)
+        public FavoritesPage(FavoritesVM viewModel)
         {
             InitializeComponent();
+
             this.viewModel = viewModel;
 
             BindingContext = this.viewModel;
-            this.viewModel.FetchCats();
         }
     }
 }

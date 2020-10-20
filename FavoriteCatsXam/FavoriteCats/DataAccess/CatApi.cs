@@ -12,15 +12,21 @@ namespace FavoriteCats.DataAccess
     public class CatApi
     {
         public event EventHandler<FetchCatsEventArgs> CatsFetched;
+        public event EventHandler<FetchCatsEventArgs> SingleCatFetched;
 
-        public Task FetchCats()
+        public void FetchCats()
         {
-            return FetchCatsInternal();
+            BaseFetch("images/search?limit=25&page=0", CatsFetched);
         }
 
-        private async Task FetchCatsInternal()
+        public void FetchSingleCat()
         {
-            Uri uri = new Uri($"{CAT_API_BASE_URL}/images/search?limit=25&page=0");
+            BaseFetch("images/search?limit=1&page=0", SingleCatFetched);
+        }
+
+        private async void BaseFetch(String pathSegment, EventHandler<FetchCatsEventArgs> fetchedEvent)
+        {
+            Uri uri = new Uri($"{CAT_API_BASE_URL}/{pathSegment}");
             HttpRequestMessage httpRequest = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
@@ -35,7 +41,7 @@ namespace FavoriteCats.DataAccess
                 var response = await httpClient.SendAsync(httpRequest);
                 var json = await response.Content.ReadAsStringAsync();
                 var cats = JsonConvert.DeserializeObject<List<Cat>>(json);
-                CatsFetched?.Invoke(this, new FetchCatsEventArgs(cats));
+                fetchedEvent?.Invoke(this, new FetchCatsEventArgs(cats));
             }
         }
     }
