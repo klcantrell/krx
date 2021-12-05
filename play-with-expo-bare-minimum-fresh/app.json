@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "play-with-expo-bare-minimum-fresh",
+    "slug": "play-with-expo-bare-minimum-fresh",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "play-with-expo-bare-minimum-fresh"
+}
