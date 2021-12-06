@@ -13,7 +13,7 @@ interface Props {
 const MyNativeTextView = requireNativeComponent<NativeProps>('MyTextView');
 
 const style: TextStyle = {
-  width: 75,
+  width: '100%',
   height: 50,
 };
 

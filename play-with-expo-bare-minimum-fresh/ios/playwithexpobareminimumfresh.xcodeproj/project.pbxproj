@@ -14,6 +14,8 @@
 		96905EF65AED1B983A6B3ABC /* libPods-playwithexpobareminimumfresh.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-playwithexpobareminimumfresh.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		E51816F9275D559300F44818 /* MyTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51816F8275D559300F44818 /* MyTextViewManager.swift */; };
+		E54ED72F275DAC250005C7BB /* MyTextViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E54ED72E275DAC250005C7BB /* MyTextViewManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,9 @@
 		7A4D352CD337FB3A3BF06240 /* Pods-playwithexpobareminimumfresh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-playwithexpobareminimumfresh.release.xcconfig"; path = "Target Support Files/Pods-playwithexpobareminimumfresh/Pods-playwithexpobareminimumfresh.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = playwithexpobareminimumfresh/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		E51816F8275D559300F44818 /* MyTextViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextViewManager.swift; sourceTree = "<group>"; };
+		E51816FA275D563E00F44818 /* MyTextViewBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTextViewBridge.h; sourceTree = "<group>"; };
+		E54ED72E275DAC250005C7BB /* MyTextViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTextViewManager.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-playwithexpobareminimumfresh/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -48,6 +53,7 @@
 		13B07FAE1A68108700A75B9A /* playwithexpobareminimumfresh */ = {
 			isa = PBXGroup;
 			children = (
+				E51816F3275D54BC00F44818 /* MyLib */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -131,6 +137,16 @@
 				92DBD88DE9BF7D494EA9DA96 /* playwithexpobareminimumfresh */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		E51816F3275D54BC00F44818 /* MyLib */ = {
+			isa = PBXGroup;
+			children = (
+				E51816F8275D559300F44818 /* MyTextViewManager.swift */,
+				E51816FA275D563E00F44818 /* MyTextViewBridge.h */,
+				E54ED72E275DAC250005C7BB /* MyTextViewManager.m */,
+			);
+			path = MyLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,7 +304,9 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				E54ED72F275DAC250005C7BB /* MyTextViewManager.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
+				E51816F9275D559300F44818 /* MyTextViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +335,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.playwithexpobareminimumfresh;
 				PRODUCT_NAME = playwithexpobareminimumfresh;
+				SWIFT_OBJC_BRIDGING_HEADER = MyLib/MyTextViewBridge.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -340,6 +359,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.playwithexpobareminimumfresh;
 				PRODUCT_NAME = playwithexpobareminimumfresh;
+				SWIFT_OBJC_BRIDGING_HEADER = MyLib/MyTextViewBridge.h;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
