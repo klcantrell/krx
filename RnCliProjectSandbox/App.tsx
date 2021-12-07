@@ -10,6 +10,7 @@
 
 import React from 'react';
 import {
+  Dimensions,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -18,7 +19,6 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
 import {
   Colors,
   DebugInstructions,
@@ -27,10 +27,11 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import MyTextView from './nativeComponents/MyTextView';
+import QRCode from 'react-native-qrcode-svg';
 
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
+}> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -75,6 +76,12 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <MyTextView>YO</MyTextView>
+          <View style={styles.qrCodeView}>
+            <QRCode
+              value="http://awesome.link.qr"
+              size={Dimensions.get('screen').width - 30}
+            />
+          </View>
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
@@ -111,6 +118,9 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  qrCodeView: {
+    alignItems: 'center',
   },
 });
 

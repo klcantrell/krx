@@ -1,5 +1,6 @@
 import React from 'react';
-import {requireNativeComponent, TextStyle} from 'react-native';
+import { StyleSheet, TextStyle } from 'react-native';
+import { requireNativeComponent } from 'react-native';
 
 interface NativeProps {
   text: string;
@@ -10,13 +11,17 @@ interface Props {
   children: string;
 }
 
+export default (props: Props) => {
+  return (
+    <MyNativeTextView text={props.children} style={styles.nativeTextView} />
+  );
+};
+
 const MyNativeTextView = requireNativeComponent<NativeProps>('MyTextView');
 
-const style: TextStyle = {
-  width: '100%',
-  height: 50,
-};
-
-export default (props: Props) => {
-  return <MyNativeTextView text={props.children} style={style} />;
-};
+const styles = StyleSheet.create({
+  nativeTextView: {
+    width: '100%',
+    height: 50,
+  },
+});
