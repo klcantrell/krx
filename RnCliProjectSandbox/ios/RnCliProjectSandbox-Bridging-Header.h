@@ -3,6 +3,6 @@
 
 #import "React/RCTBridgeModule.h"
 #import "React/RCTViewManager.h"
-#import "Foundation/Foundation.h"
+#import "UIKit/UIKit.h"
 
 #endif /* MyTextViewBridge_h */
