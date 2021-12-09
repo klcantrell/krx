@@ -4,9 +4,11 @@ import { Button, TextInput, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { NfcStatus } from '../models';
 import { initializeNfcManager, writeTag } from '../nfcManager';
+import NfcPromptAndroid from './AndroidPrompt';
 
 export default function TabTwoScreen() {
   const [nfcStatus, setNfcStatus] = useState(NfcStatus.Unintialized);
+  const [scanningForTag, setScanningForTag] = useState(false);
   const [writeResult, setWriteResult] = useState<string | null>(null);
   const [messageToWrite, setMessageToWrite] = useState('');
 
@@ -41,14 +43,17 @@ export default function TabTwoScreen() {
           style={styles.textInput}
           onChangeText={setMessageToWrite}
           value={messageToWrite}
-          placeholder={'Your message here...'}
+          placeholder='Your message here...'
+          placeholderTextColor='grey'
         />
       </View>
       <Button
-        disabled={nfcStatus !== NfcStatus.Initialized}
+        disabled={nfcStatus !== NfcStatus.Initialized || scanningForTag}
         title='Write to tag'
         onPress={async () => {
+          setScanningForTag(true);
           const writeResult = await writeTag(messageToWrite);
+          setScanningForTag(false);
           setWriteResult(writeResult);
         }}
       />
@@ -61,6 +66,13 @@ export default function TabTwoScreen() {
           />
           <Text>{writeResult}</Text>
         </View>
+      ) : null}
+      {scanningForTag ? (
+        <NfcPromptAndroid
+          show={scanningForTag}
+          message='Searching for NFC tag'
+          onCancel={() => setScanningForTag(false)}
+        />
       ) : null}
     </View>
   );

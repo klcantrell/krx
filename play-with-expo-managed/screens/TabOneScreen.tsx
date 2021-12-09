@@ -5,11 +5,13 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { NfcStatus } from '../models';
 import { initializeNfcManager, readTag } from '../nfcManager';
+import NfcPromptAndroid from './AndroidPrompt';
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
   const [nfcStatus, setNfcStatus] = useState(NfcStatus.Unintialized);
+  const [scanningForTag, setScanningForTag] = useState(false);
   const [readResult, setReadResult] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,10 +40,12 @@ export default function TabOneScreen({
       />
       <Text style={styles.statusText}>{getNfcStatusText(nfcStatus)}</Text>
       <Button
-        disabled={nfcStatus !== NfcStatus.Initialized}
+        disabled={nfcStatus !== NfcStatus.Initialized || scanningForTag}
         title='Read tag'
         onPress={async () => {
+          setScanningForTag(true);
           const tagMessage = await readTag();
+          setScanningForTag(false);
           setReadResult(tagMessage);
         }}
       />
@@ -55,6 +59,13 @@ export default function TabOneScreen({
           <Text>Message received:</Text>
           <Text>{readResult}</Text>
         </View>
+      ) : null}
+      {scanningForTag ? (
+        <NfcPromptAndroid
+          show={scanningForTag}
+          message='Searching for NFC tag'
+          onCancel={() => setScanningForTag(false)}
+        />
       ) : null}
     </View>
   );
