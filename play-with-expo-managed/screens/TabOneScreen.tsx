@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet } from 'react-native';
-import NfcManager, {
-  NfcEvents,
-  Ndef,
-  TagEvent,
-} from 'react-native-nfc-manager';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import { NfcStatus } from '../models';
+import { initializeNfcManager, readTag } from '../nfcManager';
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
   const [nfcStatus, setNfcStatus] = useState(NfcStatus.Unintialized);
-  const [scanResult, setScanResult] = useState<string | null>(null);
+  const [readResult, setReadResult] = useState<string | null>(null);
 
   useEffect(() => {
     async function initializeNfc() {
       try {
-        const isSupported = await NfcManager.isSupported();
-        if (isSupported) {
-          await NfcManager.start();
+        const nfcManagerInitialized = await initializeNfcManager();
+        if (nfcManagerInitialized) {
           setNfcStatus(NfcStatus.Initialized);
         } else {
           setNfcStatus(NfcStatus.FailedToInitialize);
@@ -43,10 +39,13 @@ export default function TabOneScreen({
       <Text style={styles.statusText}>{getNfcStatusText(nfcStatus)}</Text>
       <Button
         disabled={nfcStatus !== NfcStatus.Initialized}
-        title='Scan'
-        onPress={() => readNdef(setScanResult)}
+        title='Read tag'
+        onPress={async () => {
+          const tagMessage = await readTag();
+          setReadResult(tagMessage);
+        }}
       />
-      {scanResult ? (
+      {readResult ? (
         <View style={styles.resultContainer}>
           <View
             style={styles.separator}
@@ -54,7 +53,7 @@ export default function TabOneScreen({
             darkColor='rgba(255,255,255,0.1)'
           />
           <Text>Message received:</Text>
-          <Text>{scanResult}</Text>
+          <Text>{readResult}</Text>
         </View>
       ) : null}
     </View>
@@ -88,48 +87,11 @@ const styles = StyleSheet.create({
 function getNfcStatusText(status: NfcStatus) {
   switch (status) {
     case NfcStatus.Initialized:
-      return 'NFC functionality is available! Please press the button below to start scanning for a tag';
+      return 'NFC functionality is available! Use the button below to start scanning for a tag.';
     case NfcStatus.FailedToInitialize:
       return 'Something went wrong initializing NFC functionality';
-    case NfcStatus.Unsupported:
-      return 'NFC functionality does not seem supported on your device';
     case NfcStatus.Unintialized:
     default:
       return 'NFC functionality has not been initialized';
-    case NfcStatus.Unintialized:
   }
-}
-enum NfcStatus {
-  Unintialized,
-  Initialized,
-  FailedToInitialize,
-  Unsupported,
-}
-
-function readNdef(onScanFinished: (result: string) => void) {
-  const cleanUp = () => {
-    NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
-    NfcManager.setEventListener(NfcEvents.SessionClosed, null);
-  };
-
-  let tagMessage: string | null = null;
-
-  NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: TagEvent) => {
-    tagMessage =
-      Ndef.text.decodePayload(
-        tag.ndefMessage[0]?.payload as unknown as Uint8Array
-      ) ?? null;
-    onScanFinished(tagMessage);
-    NfcManager.setAlertMessageIOS('NDEF tag found');
-    NfcManager.unregisterTagEvent().catch(() => 0);
-  });
-
-  NfcManager.setEventListener(NfcEvents.SessionClosed, () => {
-    cleanUp();
-    if (tagMessage == null) {
-      onScanFinished('Could not extract payload from NFC tag');
-    }
-  });
-
-  NfcManager.registerTagEvent();
 }
