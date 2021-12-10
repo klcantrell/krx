@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, TextInput, StyleSheet, Platform } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
 import { NfcStatus } from '../models';
-import { initializeNfcManager, readTag } from '../nfcManager';
+import { initializeNfcManager, writeTag } from '../nfcManager';
 import NfcPromptAndroid from './AndroidPrompt';
 
-export default function TabOneScreen({
-  navigation,
-}: RootTabScreenProps<'TabOne'>) {
+export default function NfcWriteScreen() {
   const [nfcStatus, setNfcStatus] = useState(NfcStatus.Unintialized);
   const [scanningForTag, setScanningForTag] = useState(false);
-  const [readResult, setReadResult] = useState<string | null>(null);
+  const [writeResult, setWriteResult] = useState<string | null>(null);
+  const [messageToWrite, setMessageToWrite] = useState('');
 
   useEffect(() => {
     async function initializeNfc() {
@@ -32,32 +30,45 @@ export default function TabOneScreen({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Read NFC test</Text>
+      <Text style={styles.title}>Write NFC test</Text>
       <View
         style={styles.separator}
         lightColor='#eee'
         darkColor='rgba(255,255,255,0.1)'
       />
       <Text style={styles.statusText}>{getNfcStatusText(nfcStatus)}</Text>
+      <View style={styles.formContainer}>
+        <Text style={styles.textInputLabel}>Message:</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={setMessageToWrite}
+          value={messageToWrite}
+          placeholder='Your message here...'
+          placeholderTextColor='grey'
+        />
+      </View>
       <Button
         disabled={nfcStatus !== NfcStatus.Initialized || scanningForTag}
-        title='Read tag'
+        title='Write to tag'
         onPress={async () => {
-          setScanningForTag(true);
-          const tagMessage = await readTag();
-          setScanningForTag(false);
-          setReadResult(tagMessage);
+          if (Platform.OS === 'android') {
+            setScanningForTag(true);
+          }
+          const writeResult = await writeTag(messageToWrite);
+          if (Platform.OS === 'android') {
+            setScanningForTag(false);
+          }
+          setWriteResult(writeResult);
         }}
       />
-      {readResult ? (
+      {writeResult ? (
         <View style={styles.resultContainer}>
           <View
             style={styles.separator}
             lightColor='#eee'
             darkColor='rgba(255,255,255,0.1)'
           />
-          <Text>Message received:</Text>
-          <Text>{readResult}</Text>
+          <Text>{writeResult}</Text>
         </View>
       ) : null}
       {scanningForTag ? (
@@ -83,26 +94,42 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 30,
-    height: 2,
+    height: 1,
     width: '80%',
   },
   statusText: {
     marginVertical: 10,
+    alignSelf: 'flex-start',
+    paddingLeft: 20,
   },
   resultContainer: {
     width: '100%',
     alignItems: 'center',
+  },
+  formContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    paddingLeft: 20,
+  },
+  textInputLabel: {
+    fontWeight: 'bold',
+    marginRight: 10,
+    marginVertical: 20,
+  },
+  textInput: {
+    color: '#eee',
   },
 });
 
 function getNfcStatusText(status: NfcStatus) {
   switch (status) {
     case NfcStatus.Initialized:
-      return 'NFC functionality is available! Use the button below to start scanning for a tag.';
+      return 'NFC functionality is available! Use the form below to write to your tag.';
     case NfcStatus.FailedToInitialize:
       return 'Something went wrong initializing NFC functionality';
     case NfcStatus.Unintialized:
     default:
       return 'NFC functionality has not been initialized';
+    case NfcStatus.Unintialized:
   }
 }
