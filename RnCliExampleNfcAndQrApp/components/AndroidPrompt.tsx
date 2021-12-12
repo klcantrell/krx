@@ -62,7 +62,7 @@ function NfcPromptAndroid({ show, message, onCancel }: Props) {
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>{message}</Text>
           </View>
-          <Button onPress={cancelNfcScan} title='Cancel' />
+          <Button onPress={cancelNfcScan} title="Cancel" />
         </Animated.View>
         <Animated.View style={[styles.promptBg, bgAnimStyle]} />
       </View>
