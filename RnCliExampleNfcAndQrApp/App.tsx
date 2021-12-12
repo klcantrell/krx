@@ -8,11 +8,9 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
-import { Alert, StatusBar } from 'react-native';
-import dynamicLinks, {
-  FirebaseDynamicLinksTypes,
-} from '@react-native-firebase/dynamic-links';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
@@ -28,16 +26,6 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  const handleDynamicLink = (link: InitialLink) => {
-    if (link?.url.includes('https://kalalau.page.link')) {
-      Alert.alert('Welcome! A deep link has taken you here.');
-    }
-  };
-
-  useEffect(() => {
-    dynamicLinks().getInitialLink().then(handleDynamicLink);
-  });
 
   return (
     <SafeAreaProvider style={backgroundStyle}>
