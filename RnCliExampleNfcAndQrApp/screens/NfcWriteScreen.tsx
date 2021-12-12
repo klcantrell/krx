@@ -43,13 +43,13 @@ export default function NfcWriteScreen(_props: RootTabScreenProps<'WriteNfc'>) {
             style={styles.textInput}
             onChangeText={setMessageToWrite}
             value={messageToWrite}
-            placeholder='Your message here...'
+            placeholder="Your message here..."
             placeholderTextColor={darkMode ? 'gray' : 'darkgray'}
           />
         </View>
         <Button
           disabled={nfcStatus !== NfcStatus.Initialized || scanningForTag}
-          title='Write to tag'
+          title="Write to tag"
           onPress={async () => {
             if (Platform.OS === 'android') {
               setScanningForTag(true);
@@ -65,8 +65,8 @@ export default function NfcWriteScreen(_props: RootTabScreenProps<'WriteNfc'>) {
           <View style={styles.resultContainer}>
             <View
               style={styles.separator}
-              lightColor='#eee'
-              darkColor='rgba(255,255,255,0.1)'
+              lightColor="#eee"
+              darkColor="rgba(255,255,255,0.1)"
             />
             <Text>{writeResult}</Text>
           </View>
@@ -74,7 +74,7 @@ export default function NfcWriteScreen(_props: RootTabScreenProps<'WriteNfc'>) {
         {scanningForTag ? (
           <NfcPromptAndroid
             show={scanningForTag}
-            message='Searching for NFC tag'
+            message="Searching for NFC tag"
             onCancel={() => setScanningForTag(false)}
           />
         ) : null}

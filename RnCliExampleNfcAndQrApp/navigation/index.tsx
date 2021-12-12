@@ -8,11 +8,14 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import NfcWriteScreen from '../screens/NfcWriteScreen';
-import { RootTabParamList } from '../types';
+import { FormScreenStackParamList, RootTabParamList } from '../types';
 import linking from './LinkingConfiguration';
 import QrReadScreen from '../screens/QrReadScreen';
 import useColorScheme from '../hooks/useColorScheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FirstFormScreen from '../screens/FirstFormScreen';
+import SecondFormScreen from '../screens/SecondFormScreen';
 
 interface Props {
   colorScheme: string;
@@ -39,24 +42,45 @@ function RootNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName='WriteNfc'
+      initialRouteName="WriteNfc"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name='WriteNfc'
+        name="WriteNfc"
         component={NfcWriteScreen}
         options={{
           title: 'Write NFC',
         }}
       />
       <BottomTab.Screen
-        name='ReadQr'
+        name="ReadQr"
         component={QrReadScreen}
         options={{
           title: 'Read QR code',
         }}
       />
+      <BottomTab.Screen
+        name="StackedFormScreen"
+        component={StackedFormScreenNavigator}
+        options={{
+          title: 'Fill out form',
+        }}
+      />
     </BottomTab.Navigator>
+  );
+}
+
+const StackedForm = createNativeStackNavigator<FormScreenStackParamList>();
+
+function StackedFormScreenNavigator() {
+  return (
+    <StackedForm.Navigator initialRouteName="FirstFormScreen">
+      <StackedForm.Screen name="FirstFormScreen" component={FirstFormScreen} />
+      <StackedForm.Screen
+        name="SecondFormScreen"
+        component={SecondFormScreen}
+      />
+    </StackedForm.Navigator>
   );
 }
