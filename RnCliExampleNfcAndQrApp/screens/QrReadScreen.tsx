@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
 
-export default function QrReadScreen() {
+export default function QrReadScreen(_props: RootTabScreenProps<'ReadQr'>) {
   return (
     <View style={styles.container}>
       <Text>HI HI HI</Text>

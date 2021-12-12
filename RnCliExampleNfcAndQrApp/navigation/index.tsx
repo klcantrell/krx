@@ -4,12 +4,11 @@ import {
   DefaultTheme,
   NavigationContainer,
 } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import NfcWriteScreen from '../screens/NfcWriteScreen';
-import { RootStackParamList, RootTabParamList } from '../types';
+import { RootTabParamList } from '../types';
 import linking from './LinkingConfiguration';
 import QrReadScreen from '../screens/QrReadScreen';
 import useColorScheme from '../hooks/useColorScheme';
@@ -29,27 +28,13 @@ export default function Navigation({ colorScheme }: Props) {
   );
 }
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-function RootNavigator(): React.ReactElement {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name='Home'
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+function RootNavigator() {
   const colorScheme = useColorScheme();
 
   return (

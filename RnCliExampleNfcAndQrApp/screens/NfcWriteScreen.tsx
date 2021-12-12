@@ -7,8 +7,9 @@ import { initializeNfcManager, writeTag } from '../nfcManager';
 import NfcPromptAndroid from '../components/AndroidPrompt';
 import useColorScheme from '../hooks/useColorScheme';
 import { Header } from 'react-native/Libraries/NewAppScreen';
+import { RootTabScreenProps } from '../types';
 
-export default function NfcWriteScreen() {
+export default function NfcWriteScreen(_props: RootTabScreenProps<'WriteNfc'>) {
   const darkMode = useColorScheme() === 'dark';
   const [nfcStatus, setNfcStatus] = useState(NfcStatus.Unintialized);
   const [scanningForTag, setScanningForTag] = useState(false);

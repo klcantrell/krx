@@ -10,15 +10,12 @@
 
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import useColorScheme from './hooks/useColorScheme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './navigation';
-
-type InitialLink = FirebaseDynamicLinksTypes.DynamicLink | null;
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

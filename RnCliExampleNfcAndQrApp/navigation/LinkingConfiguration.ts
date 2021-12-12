@@ -9,11 +9,11 @@ import dynamicLinks, {
 } from '@react-native-firebase/dynamic-links';
 import { LinkingOptions } from '@react-navigation/native';
 
-import { RootStackParamList } from '../types';
+import { RootTabParamList } from '../types';
 
 type DynamicLink = FirebaseDynamicLinksTypes.DynamicLink;
 
-const linking: LinkingOptions<RootStackParamList> = {
+const linking: LinkingOptions<RootTabParamList> = {
   prefixes: ['https://kalalau.page.link'],
   async getInitialURL() {
     const dynamicLinkUrl = await dynamicLinks().getInitialLink();
@@ -30,12 +30,8 @@ const linking: LinkingOptions<RootStackParamList> = {
   },
   config: {
     screens: {
-      Home: {
-        screens: {
-          WriteNfc: 'writenfc',
-          ReadQr: 'readqr',
-        },
-      },
+      WriteNfc: 'writenfc',
+      ReadQr: 'readqr',
     },
   },
 };
