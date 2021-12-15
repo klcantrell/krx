@@ -1,9 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import { View, Text } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from '../state/store';
+import { userLoggedIn, userLoggingIn } from '../state/userSlice';
+
+interface LoginResponse {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+function login() {
+  const loginDispatch = async (dispatch: AppDispatch) => {
+    dispatch(userLoggingIn());
+    const response = await fetch(
+      'https://jsonplaceholder.typicode.com/todos/1'
+    );
+    const data = (await response.json()) as LoginResponse;
+    dispatch(userLoggedIn({ token: String(data.id) }));
+  };
+  return loginDispatch;
+}
 
 export default function QrReadScreen({
   navigation,
@@ -11,6 +37,8 @@ export default function QrReadScreen({
   const [cameraPermissionGranted, setCameraPermissionGranted] =
     useState<CameraPermissionStatus>(CameraPermissionStatus.Uninitialized);
   const [readResult, setReadResult] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { token, loggingIn } = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
     async function requestCameraPermission() {
@@ -36,6 +64,15 @@ export default function QrReadScreen({
         lightColor='#eee'
         darkColor='rgba(255,255,255,0.1)'
       />
+      <Button
+        title='Login'
+        disabled={token != null}
+        onPress={() => dispatch(login())}
+      />
+      {loggingIn && token == null ? <Text>Loggin in...</Text> : null}
+      {!loggingIn && token != null ? (
+        <Text>You are signed in with token: {token}</Text>
+      ) : null}
       {cameraPermissionGranted === CameraPermissionStatus.Granted ? (
         <View></View>
       ) : (
