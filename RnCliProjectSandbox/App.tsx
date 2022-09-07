@@ -75,7 +75,10 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <MyTextView>YO</MyTextView>
+          <MyTextView
+            style={{ marginVertical: 20, color: 'green', textAlign: 'center' }}>
+            Hi, here's a native text component
+          </MyTextView>
           <View style={styles.qrCodeView}>
             <QRCode
               value="http://awesome.link.qr"

@@ -3,23 +3,34 @@ import React
 
 @objc(MyTextViewManager)
 class MyTextViewManager: RCTViewManager {
-  var label = UILabel()
 
-  @objc var text: String = "" {
-    didSet {
-      print("label set!")
-      label.text = text
-    }
-  }
-  
   override func view() -> UIView! {
-    let label = UILabel()
-    label.textColor = .red
-    label.textAlignment = .center
-    return label
+    MyLabel()
+  }
+
+  override func shadowView() -> RCTShadowView! {
+    let shadowView = RCTTextShadowView.init(bridge: self.bridge)
+    return shadowView
   }
 
   override static func requiresMainQueueSetup() -> Bool {
     return true
+  }
+}
+
+class MyLabel: UILabel {
+  @objc
+  func setTitle(_ value: String) {
+    text = value
+  }
+
+  @objc
+  func setTextAlign(_ value: NSTextAlignment) {
+    textAlignment = value
+  }
+
+  @objc
+  func setColor(_ value: UIColor) {
+    textColor = value
   }
 }
