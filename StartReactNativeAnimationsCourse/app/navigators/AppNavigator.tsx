@@ -32,6 +32,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   Transitions: undefined
   PanGesture: undefined
+	Animations: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -56,6 +57,7 @@ const AppStack = observer(function AppStack() {
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="Transitions" component={Screens.TransitionsScreen} />
       <Stack.Screen name="PanGesture" component={Screens.PanGestureScreen} />
+			<Stack.Screen name="Animations" component={Screens.AnimationsScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

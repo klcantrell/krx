@@ -34,6 +34,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       <View style={[$bottomContainer, $bottomContainerInsets]}>
         <Button onPress={() => navigation.navigate("Transitions")}>Transitions</Button>
         <Button onPress={() => navigation.navigate("PanGesture")}>Pan Gesture</Button>
+        <Button onPress={() => navigation.navigate("Animations")}>Animations</Button>
       </View>
     </View>
   )
@@ -61,7 +62,7 @@ const $bottomContainer: ViewStyle = {
   borderTopRightRadius: 16,
   paddingHorizontal: spacing.lg,
   gap: spacing.sm,
-  justifyContent: 'center'
+  justifyContent: "center",
 }
 const $welcomeLogo: ImageStyle = {
   height: 88,
