@@ -11,9 +11,10 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
-  withDecay,
+  // withDecay,
 } from "react-native-reanimated"
 import { clamp } from "react-native-redash"
+import { withDecay } from "app/utils/animation"
 
 const styles = StyleSheet.create({
   container: {
@@ -48,14 +49,14 @@ const PanGesture: FC<GestureProps> = ({ width, height }) => {
       translateY.value = clamp(context.offsetY + event.translationY, 0, boundY)
     },
     onEnd: (event) => {
-      translateX.value = withDecay({
-        velocity: event.velocityX,
-        clamp: [0, boundX],
-      })
-      translateY.value = withDecay({
-        velocity: event.velocityY,
-        clamp: [0, boundY],
-      })
+      translateX.value = withDecay(
+         event.velocityX,
+        // clamp: [0, boundX],
+      )
+      translateY.value = withDecay(
+         event.velocityY,
+        // clamp: [0, boundY],
+      )
     },
   })
   const style = useAnimatedStyle(() => {
