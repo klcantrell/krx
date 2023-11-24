@@ -2,10 +2,15 @@ import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, StyleSheet } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Easing, useSharedValue, withRepeat, withTiming } from "react-native-reanimated"
-import { withPause } from "react-native-redash"
+import {
+  Easing,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated"
 import { ChatBubble } from "./ChatBubble"
 import { Button, StyleGuide } from "app/components/animated"
+import { withPause } from "app/utils/animation"
 
 interface AnimationsScreenProps extends AppStackScreenProps<"Animations"> {}
 
@@ -26,7 +31,7 @@ export const AnimationsScreen: FC<AnimationsScreenProps> = observer(function Ani
     progress.value = withPause(
       withRepeat(withTiming(1, { duration: 1000, easing }), -1, true),
       paused,
-    )
+    ) as unknown as number
   }, [paused, progress])
   return (
     <View style={styles.container}>
