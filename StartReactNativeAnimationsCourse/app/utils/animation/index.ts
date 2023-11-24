@@ -1,16 +1,23 @@
-import { defineAnimation } from "react-native-reanimated"
-import type { AnimatableValue, Animation } from "react-native-reanimated"
+import { clamp, defineAnimation } from "react-native-reanimated"
+import type { AnimatableValue, AnimationObject, Animation } from "react-native-reanimated"
 
-interface DecayAnimation extends Animation<DecayAnimation> {
-  lastTimestamp: number
+interface PhysicsAnimationState {
   velocity: number
+}
+
+interface DecayAnimation extends Animation<DecayAnimation>, PhysicsAnimationState {
+  current: number
+  lastTimestamp: number
+}
+
+interface PhysicsAnimation extends Animation<PhysicsAnimation>, PhysicsAnimationState {
   current: number
 }
 
 const VELOCITY_EPS = 5
 const DECELERATION = 0.997
 
-export const withDecay = (initialVelocity: number): number => {
+export const withDecay = (initialVelocity: number): DecayAnimation => {
   "worklet"
 
   return defineAnimation<DecayAnimation>(0, () => {
@@ -49,5 +56,45 @@ export const withDecay = (initialVelocity: number): number => {
       current: 0,
       velocity: 0,
     }
-  }) as unknown as number
+  })
+}
+
+export const withBounce = <T extends PhysicsAnimationState & AnimationObject & { current: number }>(
+  nextAnimation: T,
+  lowerBound: number,
+  upperBound: number,
+): PhysicsAnimation => {
+  "worklet"
+
+  return defineAnimation<PhysicsAnimation>(0, () => {
+    "worklet"
+
+    const onStart = (
+      _state: PhysicsAnimation,
+      current: AnimatableValue,
+      now: number,
+      previousAnimation: Animation<any> | PhysicsAnimation | null,
+    ) => {
+      nextAnimation.onStart(nextAnimation, current, now, previousAnimation)
+    }
+
+    const onFrame = (state: PhysicsAnimation, now: number) => {
+      const finished = nextAnimation.onFrame(nextAnimation, now)
+      const { current, velocity } = nextAnimation
+      if ((velocity < 0 && current < lowerBound) || (velocity > 0 && current > upperBound)) {
+        nextAnimation.velocity *= -0.5
+        nextAnimation.current = clamp(current, lowerBound, upperBound)
+      }
+
+      state.current = nextAnimation.current
+      return finished
+    }
+
+    return {
+      onStart,
+      onFrame,
+      velocity: 0,
+      current: 0,
+    }
+  })
 }
