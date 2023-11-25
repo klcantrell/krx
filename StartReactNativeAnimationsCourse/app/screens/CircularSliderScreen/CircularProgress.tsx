@@ -1,10 +1,13 @@
 import React from "react"
-import { Platform, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import Svg, { Circle } from "react-native-svg"
 
-import { StyleGuide } from "app/components/animated"
 import type { SharedValue } from "react-native-reanimated"
-import Animated, { useAnimatedProps } from "react-native-reanimated"
+import Animated, {
+  createAnimatedPropAdapter,
+  useAnimatedProps,
+  processColor,
+} from "react-native-reanimated"
 
 const { PI } = Math
 
@@ -25,12 +28,29 @@ export const CircularProgress = ({
 }: CircularProgressProps) => {
   const radius = r - strokeWidth / 2
   const circumference = radius * 2 * PI
-  const props = useAnimatedProps(() => {
-    return {
-      strokeDashoffset: theta.value * radius,
-      ...(Platform.OS === "ios" ? { stroke: backgroundColor.value } : null),
-    }
-  })
+
+  const adapter = createAnimatedPropAdapter(
+    (props) => {
+      if (Object.keys(props).includes("stroke")) {
+        props.stroke = {
+          type: 0,
+          payload: processColor(props.stroke as string),
+        }
+      }
+    },
+    ["stroke"],
+  )
+
+  const props = useAnimatedProps(
+    () => {
+      return {
+        strokeDashoffset: theta.value * radius,
+        stroke: backgroundColor.value,
+      }
+    },
+    [],
+    adapter,
+  )
 
   return (
     <Svg style={StyleSheet.absoluteFill}>
@@ -48,7 +68,6 @@ export const CircularProgress = ({
         cy={r}
         fill="transparent"
         r={radius}
-        stroke={StyleGuide.palette.primary}
         strokeDasharray={`${circumference}, ${circumference}`}
         strokeWidth={strokeWidth}
       />
