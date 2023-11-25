@@ -35,6 +35,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         <Button onPress={() => navigation.navigate("Transitions")}>Transitions</Button>
         <Button onPress={() => navigation.navigate("PanGesture")}>Pan Gesture</Button>
         <Button onPress={() => navigation.navigate("Animations")}>Animations</Button>
+        <Button onPress={() => navigation.navigate("CircularSlider")}>Circular Slider</Button>
       </View>
     </View>
   )
