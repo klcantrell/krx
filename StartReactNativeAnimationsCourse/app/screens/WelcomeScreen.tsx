@@ -5,7 +5,8 @@ import { Button, Text } from "app/components"
 import { isRTL } from "../i18n"
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
-import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import { ScrollView } from "react-native-gesture-handler"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
@@ -15,7 +16,7 @@ interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen({
   navigation,
 }) {
-  const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
+  const insets = useSafeAreaInsets()
 
   return (
     <View style={$container}>
@@ -31,12 +32,16 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         <Image style={$welcomeFace} source={welcomeFace} resizeMode="contain" />
       </View>
 
-      <View style={[$bottomContainer, $bottomContainerInsets]}>
+      <ScrollView
+        contentContainerStyle={[$bottomContainerContent, { paddingBottom: insets.bottom * 2 }]}
+        style={$bottomContainer}
+      >
         <Button onPress={() => navigation.navigate("Transitions")}>Transitions</Button>
         <Button onPress={() => navigation.navigate("PanGesture")}>Pan Gesture</Button>
         <Button onPress={() => navigation.navigate("Animations")}>Animations</Button>
         <Button onPress={() => navigation.navigate("CircularSlider")}>Circular Slider</Button>
-      </View>
+        <Button onPress={() => navigation.navigate("Graph")}>Graph</Button>
+      </ScrollView>
     </View>
   )
 })
@@ -57,14 +62,18 @@ const $topContainer: ViewStyle = {
 const $bottomContainer: ViewStyle = {
   flexShrink: 1,
   flexGrow: 0,
-  flexBasis: "43%",
+  height: "43%",
   backgroundColor: colors.palette.neutral100,
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
   paddingHorizontal: spacing.lg,
-  gap: spacing.sm,
-  justifyContent: "center",
+  paddingVertical: spacing.md,
 }
+const $bottomContainerContent: ViewStyle = {
+  justifyContent: "flex-start",
+  gap: spacing.sm,
+}
+
 const $welcomeLogo: ImageStyle = {
   height: 88,
   width: "100%",

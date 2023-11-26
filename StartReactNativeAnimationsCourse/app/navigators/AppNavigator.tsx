@@ -34,6 +34,7 @@ export type AppStackParamList = {
   PanGesture: undefined
 	Animations: undefined
 	CircularSlider: undefined
+	Graph: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -60,6 +61,7 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="PanGesture" component={Screens.PanGestureScreen} />
 			<Stack.Screen name="Animations" component={Screens.AnimationsScreen} />
 			<Stack.Screen name="CircularSlider" component={Screens.CircularSliderScreen} />
+			<Stack.Screen name="Graph" component={Screens.GraphScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
