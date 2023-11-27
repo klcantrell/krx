@@ -8,12 +8,13 @@ import { AppStackScreenProps } from "app/navigators"
 import { CARD_HEIGHT, CARD_WIDTH, Card, Cards } from "app/components/animated"
 import { PanGestureHandlerGestureEvent, PanGestureHandler } from "react-native-gesture-handler"
 import Animated, {
+  clamp,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withDecay,
 } from "react-native-reanimated"
-import { clamp, withBouncing } from "react-native-redash"
+import { withBouncing } from "react-native-redash"
 
 const styles = StyleSheet.create({
   container: {

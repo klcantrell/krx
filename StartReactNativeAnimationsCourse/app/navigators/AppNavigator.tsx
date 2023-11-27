@@ -36,6 +36,7 @@ export type AppStackParamList = {
 	CircularSlider: undefined
 	Graph: undefined
 	Swiping: undefined
+	DynamicSpring: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -64,6 +65,7 @@ const AppStack = observer(function AppStack() {
 			<Stack.Screen name="CircularSlider" component={Screens.CircularSliderScreen} />
 			<Stack.Screen name="Graph" component={Screens.GraphScreen} />
 			<Stack.Screen name="Swiping" component={Screens.SwipingScreen} />
+			<Stack.Screen name="DynamicSpring" component={Screens.DynamicSpringScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
