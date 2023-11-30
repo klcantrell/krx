@@ -37,6 +37,7 @@ export type AppStackParamList = {
 	Graph: undefined
 	Swiping: undefined
 	DynamicSpring: undefined
+	DragToSort: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -66,6 +67,7 @@ const AppStack = observer(function AppStack() {
 			<Stack.Screen name="Graph" component={Screens.GraphScreen} />
 			<Stack.Screen name="Swiping" component={Screens.SwipingScreen} />
 			<Stack.Screen name="DynamicSpring" component={Screens.DynamicSpringScreen} />
+			<Stack.Screen name="DragToSort" component={Screens.DragToSortScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

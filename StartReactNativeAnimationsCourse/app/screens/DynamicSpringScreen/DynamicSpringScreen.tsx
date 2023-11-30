@@ -70,13 +70,10 @@ const DynamicSpringContent: FC<DynamicSpringContentProps> = ({ width, height }) 
   )
 }
 
-interface DynamicSpringScreenProps extends AppStackScreenProps<"DynamicSpring"> {
-  width: number
-  height: number
-}
+interface DynamicSpringScreenProps extends AppStackScreenProps<"DynamicSpring"> {}
 
 export const DynamicSpringScreen: FC<DynamicSpringScreenProps> = observer(
-  function PanGestureScreen() {
+  function DynamicSpringScreen() {
     const [container, setContainer] = useState<LayoutRectangle | null>(null)
     return (
       <View
