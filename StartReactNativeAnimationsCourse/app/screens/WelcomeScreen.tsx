@@ -44,6 +44,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
         <Button onPress={() => navigation.navigate("Swiping")}>Swiping</Button>
         <Button onPress={() => navigation.navigate("DynamicSpring")}>Dynamic Spring</Button>
         <Button onPress={() => navigation.navigate("DragToSort")}>Drag To Sort</Button>
+        <Button onPress={() => navigation.navigate("Bezier")}>Bezier</Button>
       </ScrollView>
     </View>
   )
