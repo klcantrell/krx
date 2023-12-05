@@ -39,6 +39,7 @@ export type AppStackParamList = {
 	DynamicSpring: undefined
 	DragToSort: undefined
 	Bezier: undefined
+	ShapeMorphing: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -70,6 +71,7 @@ const AppStack = observer(function AppStack() {
 			<Stack.Screen name="DynamicSpring" component={Screens.DynamicSpringScreen} />
 			<Stack.Screen name="DragToSort" component={Screens.DragToSortScreen} />
 			<Stack.Screen name="Bezier" component={Screens.BezierScreen} />
+			<Stack.Screen name="ShapeMorphing" component={Screens.ShapeMorphingScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

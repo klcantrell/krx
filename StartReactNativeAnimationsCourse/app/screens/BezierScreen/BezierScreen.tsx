@@ -3,10 +3,11 @@ import { Dimensions, StyleSheet, View } from "react-native"
 import Animated, { useAnimatedProps, useSharedValue } from "react-native-reanimated"
 import { observer } from "mobx-react-lite"
 import Svg, { Line, Path, Circle } from "react-native-svg"
+import { addCurve, createPath, serialize } from "react-native-redash"
+
 import { AppStackScreenProps } from "app/navigators"
 
 import { ControlPoint, CONTROL_POINT_RADIUS } from "./ControlPoint"
-import { addCurve, createPath, serialize } from "react-native-redash"
 
 const AnimatedPath = Animated.createAnimatedComponent(Path)
 const AnimatedLine = Animated.createAnimatedComponent(Line)
