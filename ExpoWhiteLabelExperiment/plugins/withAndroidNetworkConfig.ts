@@ -8,8 +8,8 @@ import {
 import fs from "fs"
 import path from "path"
 
-const NETWORK_CONFIG_FILE_CONTENT = `
-<?xml version="1.0" encoding="utf-8"?>
+const NETWORK_CONFIG_FILE_CONTENT = `<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated using our withAndroidNetworkConfig Expo config plugin -->
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <!-- For React Native Hot-reloading system -->
