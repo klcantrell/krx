@@ -1,4 +1,3 @@
-import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 import {
@@ -6,25 +5,21 @@ import {
   Text,
 } from "app/components"
 import { isRTL } from "../i18n"
-import { useStores } from "../models" // @demo remove-current-line
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
 import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
+import { useStore } from "app/models"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
-export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen(
-  _props, // @demo remove-current-line
-) {
+export const WelcomeScreen: FC<WelcomeScreenProps> = (_props) => {
   // @demo remove-block-start
   const { navigation } = _props
-  const {
-    authenticationStore: { logout },
-  } = useStores()
+  const logout = useStore((state) => state.logout)
 
   function goNext() {
     navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
@@ -68,7 +63,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       </View>
     </View>
   )
-})
+}
 
 const $container: ViewStyle = {
   flex: 1,

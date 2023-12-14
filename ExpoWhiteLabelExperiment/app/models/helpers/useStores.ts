@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { RootStore, RootStoreModel } from "../RootStore"
+import { RootStore, RootStoreModel, useStore } from "../RootStore"
 import { setupRootStore } from "./setupRootStore"
 
 /**
@@ -59,11 +59,6 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
       const { unsubscribe } = await setupRootStore(rootStore)
       _unsubscribe = unsubscribe
 
-      // reactotron integration with the MST root store (DEV only)
-      if (__DEV__) {
-        console.tron.trackMstNode(rootStore)
-      }
-
       // let the app know we've finished rehydrating
       setRehydrated(true)
 
@@ -78,4 +73,34 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
   }, [])
 
   return { rootStore, rehydrated }
+}
+
+export function useInitializeStores(callback?: () => void | Promise<void>) {
+  const [hydrated, setHydrated] = useState(false)
+
+  useEffect(() => {
+    const alreadyHydrated = useStore.persist.hasHydrated()
+
+    if (alreadyHydrated) {
+      setHydrated(true)
+
+      if (callback) {
+        callback()
+      }
+    }
+
+    const unsubscribeFinishHydration = useStore.persist.onFinishHydration(() => {
+      setHydrated(true)
+
+      if (callback) {
+        callback()
+      }
+    })
+
+    return () => {
+      unsubscribeFinishHydration()
+    }
+  }, [])
+
+  return { hydrated }
 }
