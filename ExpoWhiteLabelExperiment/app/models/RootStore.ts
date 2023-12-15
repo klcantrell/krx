@@ -40,7 +40,6 @@ export const useStore = create<AuthenticationState & EpisodeState>()(
         // don't persist computed values
         const {
           computedAuthenticationState: _computedAuthenticationState,
-          computedEpisodeState: _computedEpisodeState,
           ...rest
         } = state
 

@@ -30,6 +30,22 @@ import { customFontsToLoad } from "./theme"
 import Config from "./config"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { ViewStyle } from "react-native"
+import { QueryClient } from "@tanstack/react-query"
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client"
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60, // 1 hour
+    },
+  },
+})
+
+const asyncStoragePersister = createAsyncStoragePersister({
+  storage: AsyncStorage,
+})
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -99,11 +115,16 @@ function App(props: AppProps) {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <ErrorBoundary catchErrors={Config.catchErrors}>
         <GestureHandlerRootView style={$container}>
-          <AppNavigator
-            linking={linking}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{ persister: asyncStoragePersister }}
+          >
+            <AppNavigator
+              linking={linking}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </PersistQueryClientProvider>
         </GestureHandlerRootView>
       </ErrorBoundary>
     </SafeAreaProvider>

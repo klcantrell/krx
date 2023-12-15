@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, useEffect, useMemo } from "react"
+import React, { ComponentType, FC, useMemo } from "react"
 import {
   AccessibilityProps,
   ActivityIndicator,
@@ -39,6 +39,8 @@ import { colors, spacing } from "../theme"
 import { delay } from "../utils/delay"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
 import { useStore } from "app/models"
+import { useQuery } from "@tanstack/react-query"
+import { api } from "app/services/api"
 
 const ICON_SIZE = 14
 
@@ -48,21 +50,9 @@ const rnrImage3 = require("../../assets/images/demo/rnr-image-3.png")
 const rnrImages = [rnrImage1, rnrImage2, rnrImage3]
 
 export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = () => {
-  const {
-    fetchEpisodes,
-    episodesForList,
-    favorites,
-    episodes,
-    favoritesOnly,
-    toggleFavoritesOnly,
-    hasFavorite,
-    toggleFavorite,
-  } = useStore(
+  const { favorites, favoritesOnly, toggleFavoritesOnly, hasFavorite, toggleFavorite } = useStore(
     useShallow((state) => ({
-      fetchEpisodes: state.fetchEpisodes,
-      episodesForList: state.computedEpisodeState.episodesForList,
       favorites: state.favorites,
-      episodes: state.episodes,
       favoritesOnly: state.favoritesOnly,
       toggleFavoritesOnly: state.toggleFavoritesOnly,
       hasFavorite: state.hasFavorite,
@@ -70,22 +60,29 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
     })),
   )
 
-  const [refreshing, setRefreshing] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const episodesQuery = useQuery({
+    queryKey: ["episodes"],
+    queryFn: async () => {
+      const response = await api.getEpisodes()
+      if (response.kind === "ok") {
+        return response.episodes
+      } else {
+        console.error(`Error fetching episodes: ${JSON.stringify(response)}`)
+        throw new Error(response.kind)
+      }
+    },
+  })
 
-  // initially, kick off a background refresh without the refreshing UI
-  useEffect(() => {
-    ;(async function load() {
-      setIsLoading(true)
-      await fetchEpisodes()
-      setIsLoading(false)
-    })()
-  }, [fetchEpisodes])
+  const [refreshing, setRefreshing] = React.useState(false)
+  const episodes = episodesQuery.data ?? []
+  const episodesForList = favoritesOnly
+    ? episodes.filter((e) => favorites.includes(e.guid))
+    : episodes
 
   // simulate a longer refresh, if the refresh is too fast for UX
   async function manualRefresh() {
     setRefreshing(true)
-    await Promise.all([fetchEpisodes(), delay(750)])
+    await Promise.all([episodesQuery.refetch(), delay(750)])
     setRefreshing(false)
   }
 
@@ -99,7 +96,7 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
         estimatedItemSize={177}
         onRefresh={manualRefresh}
         ListEmptyComponent={
-          isLoading ? (
+          episodesQuery.isLoading ? (
             <ActivityIndicator />
           ) : (
             <EmptyState
@@ -139,8 +136,8 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
         renderItem={({ item }) => (
           <EpisodeCard
             episode={item}
-            isFavorite={hasFavorite(item)}
-            onPressFavorite={() => toggleFavorite(item)}
+            isFavorite={hasFavorite(item.guid)}
+            onPressFavorite={() => toggleFavorite(item.guid)}
           />
         )}
       />
