@@ -90,3 +90,8 @@ web-build/
 !env.js
 
 /coverage
+
+# Generated branding
+app/theme/brand.ts
+assets/brand/images
+app/i18n/brand/

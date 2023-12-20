@@ -11,7 +11,7 @@ import { useHeader } from "../utils/useHeader" // @demo remove-current-line
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { useStore } from "app/models"
 
-const welcomeLogo = require("../../assets/images/logo.png")
+const welcomeLogo = require("../../assets/brand/images/logo.png")
 const welcomeFace = require("../../assets/images/welcome-face.png")
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
@@ -74,7 +74,6 @@ const $topContainer: ViewStyle = {
   flexShrink: 1,
   flexGrow: 1,
   flexBasis: "57%",
-  justifyContent: "center",
   paddingHorizontal: spacing.lg,
 }
 
@@ -89,9 +88,9 @@ const $bottomContainer: ViewStyle = {
   justifyContent: "space-around",
 }
 const $welcomeLogo: ImageStyle = {
-  height: 88,
+  height: 150,
   width: "100%",
-  marginBottom: spacing.xxl,
+  marginBottom: spacing.md,
 }
 
 const $welcomeFace: ImageStyle = {

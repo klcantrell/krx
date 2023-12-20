@@ -27,8 +27,12 @@
     "web": "npx expo start --web",
     "bundle:web": "npx expo export --platform web",
     "serve:web": "npx server dist",
-    "prebuild:clean": "npx expo prebuild --clean",
-    "prebuild": "npx expo prebuild"
+    "gen:brand": "ts-node scripts/applyAppBrand",
+    "gen:brand:dev": "source scripts/dev_env.sh && ts-node scripts/applyAppBrand",
+    "prebuild:clean:dev": "source scripts/dev_env.sh && npm run gen:brand:dev && npx expo prebuild --clean",
+    "prebuild:dev": "source scripts/dev_env.sh && npm run gen:brand:dev && npx expo prebuild",
+    "prebuild:clean": "npm run gen:brand && npx expo prebuild --clean",
+    "prebuild": "npm run gen:brand && npx expo prebuild"
   },
   "dependencies": {
     "@expo-google-fonts/space-grotesk": "^0.2.2",

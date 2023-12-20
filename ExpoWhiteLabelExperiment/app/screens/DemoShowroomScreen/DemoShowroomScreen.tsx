@@ -11,7 +11,7 @@ import { useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle"
 import * as Demos from "./demos"
 import { DrawerIconButton } from "./DrawerIconButton"
 
-const logo = require("../../../assets/images/logo.png")
+const logo = require("../../../assets/brand/images/logo.png")
 
 export interface Demo {
   name: string

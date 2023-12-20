@@ -12,12 +12,13 @@ require("ts-node/register")
  * You can read more about Expo's Configuration Resolution Rules here:
  * https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
  */
-module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
+module.exports = ({ config, projectRoot }: ConfigContext): Partial<ExpoConfig> => {
   const plugins = config.plugins ?? []
 
   plugins.push(require("./plugins/withSplashScreen").withSplashScreen)
+  plugins.push([require("./plugins/withAppBrand").withAppBrand, { projectRoot }])
 
-  if (process.env.APP_ENV !== "production") {
+  if (process.env.APP_ENV === "development") {
     plugins.push(require("./plugins/withAndroidNetworkConfig").withAndroidNetworkConfig)
   }
 

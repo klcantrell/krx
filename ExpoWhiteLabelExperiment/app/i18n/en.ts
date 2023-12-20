@@ -1,3 +1,5 @@
+import brandEn from "./brand/en"
+
 const en = {
   common: {
     ok: "OK!",
@@ -6,9 +8,8 @@ const en = {
     logOut: "Log Out", // @demo remove-current-line
   },
   welcomeScreen: {
-    postscript:
-      "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
-    readyForLaunch: "Your app, almost ready for launch!",
+    postscript: brandEn.welcomeScreen.postscript,
+    readyForLaunch: brandEn.welcomeScreen.readyForLaunch,
     exciting: "(ohh, this is exciting!)",
     letsGo: "Let's go!", // @demo remove-current-line
   },
@@ -99,7 +100,7 @@ const en = {
       "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
   },
   demoPodcastListScreen: {
-    title: "React Native Radio episodes",
+    title: brandEn.demoPodcastListScreen.title,
     onlyFavorites: "Only Show Favorites",
     favoriteButton: "Favorite",
     unfavoriteButton: "Unfavorite",

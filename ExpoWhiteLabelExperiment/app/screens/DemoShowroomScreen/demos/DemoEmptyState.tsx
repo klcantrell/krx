@@ -23,7 +23,7 @@ export const DemoEmptyState: Demo = {
       description="There are a few different ways to pass content."
     >
       <EmptyState
-        imageSource={require("../../../../assets/images/logo.png")}
+        imageSource={require("../../../../assets/brand/images/logo.png")}
         heading="Customize Image"
         content="You can pass in any image source."
       />
