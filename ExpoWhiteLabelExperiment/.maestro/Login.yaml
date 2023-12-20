@@ -3,7 +3,7 @@
 # Open up our app and use the default credentials to login
 # and navigate to the demo screen
 
-appId: com.expowhitelabelexperiment # the app id of the app we want to test
+appId: com.spiderpods # the app id of the app we want to test
 # You can find the appId of an Ignite app in the `app.json` file
 # as the "package" under the "android" section and "bundleIdentifier" under the "ios" section
 ---
@@ -12,7 +12,7 @@ appId: com.expowhitelabelexperiment # the app id of the app we want to test
 - assertVisible: "Sign In"
 - tapOn:
     text: "Tap to sign in!"
-- assertVisible: "Your app, almost ready for launch!"
+- assertVisible: "Get ready for web-tastic content"
 - tapOn:
     text: "Let's go!"
 - assertVisible: "Components to jump start your project!"
