@@ -9,7 +9,7 @@ function applyAppBrand() {
   if (brandName && fs.existsSync(themeSourcePath)) {
     fs.copyFileSync(themeSourcePath, themeDestinationPath)
   } else {
-    const themeDefaultPath = path.join(__dirname, "brand/theme", "default.ts")
+    const themeDefaultPath = path.join(__dirname, "..", "brand/theme", "default.ts")
     fs.copyFileSync(themeDefaultPath, themeDestinationPath)
   }
 
