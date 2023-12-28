@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from "react"
-import { ActivityIndicator, TextStyle, ViewStyle } from "react-native"
+import { ActivityIndicator, Platform, TextStyle, ViewStyle } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import {
   PaymentIntent,
   Reader,
   StripeTerminalProvider,
   useStripeTerminal,
+  requestNeededAndroidPermissions,
 } from "@stripe/stripe-terminal-react-native"
 
 import { Button, Screen, Text } from "../components"
@@ -16,11 +17,14 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
   const terminalTokenQuery = useQuery({
     queryKey: ["terminalToken"],
     queryFn: async () => {
-      const response = await fetch("http://192.168.4.20:3000/connection_token", {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `http://${Platform.OS === "android" ? "10.0.2.2" : "192.168.4.20"}:3000/connection_token`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      })
+      )
       const data = (await response.json()) as { secret: string }
       return data
     },
@@ -62,6 +66,19 @@ const SetupTerminal = (props: { onConnected: () => void }) => {
 
   useEffect(() => {
     async function initializeStripe() {
+      const { error: androidPermissionsError } = await requestNeededAndroidPermissions({
+        accessFineLocation: {
+          title: "Location Permission",
+          message: "Stripe Terminal needs access to your location",
+          buttonPositive: "Accept",
+        },
+      })
+
+      if (androidPermissionsError) {
+        console.error("Something went wrong retrieving Android permissions")
+        return
+      }
+
       console.log("initializing Stripe!")
       const initResult = await stripeTerminal.initialize()
 
