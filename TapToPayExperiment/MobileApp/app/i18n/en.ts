@@ -3,6 +3,7 @@ import brandEn from "./brand/en"
 const en = {
   common: {
     ok: "OK!",
+    go: "Go",
     cancel: "Cancel",
     back: "Back",
     logOut: "Log Out", // @demo remove-current-line
@@ -45,8 +46,16 @@ const en = {
   demoNavigator: {
     componentsTab: "Components",
     debugTab: "Debug",
-    communityTab: "Community",
+    communityTab: "Payment",
     podcastListTab: "Podcast",
+  },
+  demoCollectPaymentScreen: {
+    title: "Collect support for the pod",
+    settingUpPaymentTerminal: "Setting up payment terminal",
+    startNewTransaction: "Start a new transaction",
+    startAnotherTransaction: "Start another transaction",
+    placeYourCardOnTheCardReader: "Place your card on the reader",
+    thankYou: "Thanks for your support!",
   },
   demoCommunityScreen: {
     title: "Connect with the community",

@@ -3,6 +3,7 @@ import { Translations } from "./en"
 const fr: Translations = {
   common: {
     ok: "OK !",
+    go: "common.go",
     cancel: "Annuler",
     back: "Retour",
     logOut: "Déconnexion", // @demo remove-current-line
@@ -49,6 +50,14 @@ const fr: Translations = {
     debugTab: "Débogage",
     communityTab: "Communauté",
     podcastListTab: "Podcasts",
+  },
+  demoCollectPaymentScreen: {
+    title: "demoCollectPaymentScreen.title",
+    settingUpPaymentTerminal: "demoCollectPaymentScreen.settingUpTapToPay",
+    startNewTransaction: "demoCollectPaymentScreen.startNewTransaction",
+    startAnotherTransaction: "demoCollectPaymentScreen.startAnotherTransaction",
+    placeYourCardOnTheCardReader: "demoCollectPaymentScreen.placeYourCardOnTheCardReader",
+    thankYou: "demoCollectPaymentScreen.thankYou",
   },
   demoCommunityScreen: {
     title: "Connectez-vous avec la communauté",

@@ -3,6 +3,7 @@ import { Translations } from "./en"
 const ko: Translations = {
   common: {
     ok: "확인!",
+    go: "common.go",
     cancel: "취소",
     back: "뒤로",
     logOut: "로그아웃", // @demo remove-current-line
@@ -48,6 +49,14 @@ const ko: Translations = {
     debugTab: "디버그",
     communityTab: "커뮤니티",
     podcastListTab: "팟캐스트",
+  },
+  demoCollectPaymentScreen: {
+    title: "demoCollectPaymentScreen.title",
+    settingUpPaymentTerminal: "demoCollectPaymentScreen.settingUpTapToPay",
+    startNewTransaction: "demoCollectPaymentScreen.startNewTransaction",
+    startAnotherTransaction: "demoCollectPaymentScreen.startAnotherTransaction",
+    placeYourCardOnTheCardReader: "demoCollectPaymentScreen.placeYourCardOnTheCardReader",
+    thankYou: "demoCollectPaymentScreen.thankYou",
   },
   demoCommunityScreen: {
     title: "커뮤니티와 함께해요",

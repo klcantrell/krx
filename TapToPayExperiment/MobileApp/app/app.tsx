@@ -64,7 +64,7 @@ const config = {
         },
         DemoDebug: "debug",
         DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        DemoCollectPayment: "payment",
       },
     },
   },
