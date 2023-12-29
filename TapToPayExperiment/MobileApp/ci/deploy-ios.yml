@@ -9,19 +9,16 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-resources:
-  repositories:
-  - repository: githubrepo
-    type: github
-    endpoint: klcantrell (2)
-    name: klcantrell/krx
-    ref: releases/$(Build.SourceBranchName)
-
 jobs:
 - job: deploy_iOS
   displayName: Deploy iOS
   steps:
-  - checkout: githubrepo
+  - checkout: self
+
+  - script: |
+      git fetch --all
+      git switch releases/$(Build.SourceBranchName)
+    displayName: 'Checkout release branch'
 
   - task: UseNode@1
     inputs:
