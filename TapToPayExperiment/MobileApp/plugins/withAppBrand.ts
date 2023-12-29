@@ -23,6 +23,7 @@ export const withAppBrand: ConfigPlugin<{ projectRoot: string }> = (config, { pr
 interface BrandAppManifest {
   ios: {
     icon: string
+    bundleIdentifierDev: string
     bundleIdentifier: string
     splash: {
       image: string
@@ -36,6 +37,7 @@ interface BrandAppManifest {
       foregroundImage: string
       backgroundImage: string
     }
+    packageDev: string
     package: string
     splash: {
       image: string
@@ -56,7 +58,8 @@ function updateConfig(config: ExpoConfig, { ios, android, app }: BrandAppManifes
 
   const updatedIosConfig: ExpoConfig["ios"] = {
     ...config.ios,
-    bundleIdentifier: ios.bundleIdentifier,
+    bundleIdentifier:
+      process.env.APP_ENV === "development" ? ios.bundleIdentifierDev : ios.bundleIdentifier,
     icon: ios.icon,
     splash: {
       ...config.ios?.splash,
@@ -67,7 +70,7 @@ function updateConfig(config: ExpoConfig, { ios, android, app }: BrandAppManifes
     ...config.android,
     icon: android.icon,
     adaptiveIcon: android.adaptiveIcon,
-    package: android.package,
+    package: process.env.APP_ENV === "development" ? android.packageDev : android.package,
     splash: {
       ...config.android?.splash,
       ...android.splash,
