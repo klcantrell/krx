@@ -1,29 +1,30 @@
 trigger:
   branches:
     include:
-    - releases/*
+      - releases/*
   paths:
     include:
-    - TapToPayExperiment/MobileApp
+      - TapToPayExperiment/MobileApp
 
 pool:
   vmImage: ubuntu-latest
 
 jobs:
-- job: deploy_iOS
-  displayName: Deploy iOS
-  steps:
-  - checkout: self
+  - job: deploy_iOS
+    displayName: Deploy iOS
+    steps:
+      - checkout: self
 
-  - script: |
-      git fetch --all
-      git switch releases/$(Build.SourceBranchName)
-    displayName: 'Checkout release branch'
+      - script: |
+          git fetch --all
+          git switch releases/$(Build.SourceBranchName)
+        displayName: "Checkout release branch"
 
-  - task: UseNode@1
-    inputs:
-      version: '20.x'
-    displayName: 'Install Node.js'
+      - task: UseNode@1
+        inputs:
+          version: "20.x"
+        displayName: "Install Node.js"
 
-  - script: ls
-    displayName: 'Check working directory'
+      - script: bundle install
+        workingDirectory: TapToPayExperiment/ios
+        displayName: "Install fastlane gems"

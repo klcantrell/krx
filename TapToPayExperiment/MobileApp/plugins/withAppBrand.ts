@@ -1,54 +1,17 @@
 import { ConfigPlugin } from "expo/config-plugins"
 import { ExpoConfig } from "@expo/config"
-import fs from "fs"
 import path from "path"
 
+import type { BrandAppManifest } from "./types"
+
 export const withAppBrand: ConfigPlugin<{ projectRoot: string }> = (config, { projectRoot }) => {
-  const brandName = process.env.APP_BRAND_NAME
+  const brandName = process.env.APP_BRAND_NAME ?? "default"
   const sourcePath = path.join(projectRoot, "brand/app-manifest", `${brandName}.ts`)
 
-  if (brandName && fs.existsSync(sourcePath)) {
-    const { ios, android, app } = require(sourcePath)
-    updateConfig(config, { ios, android, app })
-  } else {
-    const defaultPath = path.join(projectRoot, "brand/app-manifest", "default.ts")
-
-    const { ios, android, app } = require(defaultPath)
-    updateConfig(config, { ios, android, app })
-  }
+  const { ios, android, app } = require(sourcePath)
+  updateConfig(config, { ios, android, app })
 
   return config
-}
-
-interface BrandAppManifest {
-  ios: {
-    icon: string
-    bundleIdentifierDev: string
-    bundleIdentifier: string
-    splash: {
-      image: string
-      tabletImage: string
-      backgroundColor: string
-    }
-  }
-  android: {
-    icon: string
-    adaptiveIcon: {
-      foregroundImage: string
-      backgroundImage: string
-    }
-    packageDev: string
-    package: string
-    splash: {
-      image: string
-      backgroundColor: string
-    }
-  }
-  app: {
-    name: string
-    slug: string
-    scheme: string
-  }
 }
 
 function updateConfig(config: ExpoConfig, { ios, android, app }: BrandAppManifest) {
