@@ -33,6 +33,10 @@ jobs:
         workingDirectory: TapToPayExperiment/MobileApp
         displayName: "Prebuild iOS project"
 
+      - task: UseRubyVersion@0
+        inputs:
+          versionSpec: "3.2.2"
+
       - script: bundle install
         workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Install fastlane gems"
