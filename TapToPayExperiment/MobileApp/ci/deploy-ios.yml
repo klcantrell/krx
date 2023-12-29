@@ -13,10 +13,7 @@ jobs:
 - job: deploy_iOS
   displayName: Deploy iOS
   steps:
-  - checkout: self
-
-  - script: git switch releases/$(Build.SourceBranchName)
-    displayName: 'Checkout release branch'
+  - checkout: self@releases/$(Build.SourceBranchName)
 
   - task: UseNode@1
     inputs:
