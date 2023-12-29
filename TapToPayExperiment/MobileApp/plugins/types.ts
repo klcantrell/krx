@@ -3,6 +3,7 @@ export interface BrandAppManifest {
     icon: string
     bundleIdentifierDev: string
     bundleIdentifier: string
+    provisioningProfile: string
     splash: {
       image: string
       tabletImage: string

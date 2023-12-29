@@ -8,6 +8,7 @@ export const ios = {
   icon: "./brand/assets/default/app-icon/ios-universal.png",
   bundleIdentifierDev: "com.taptopayexperiment.dev",
   bundleIdentifier: "com.taptopayexperiment",
+  provisioningProfile: "TapToPayDistributionProfile",
   splash: {
     image: "./brand/assets/default/splash-screen/logo.png",
     tabletImage: "./brand/assets/default/splash-screen/logo.png",

@@ -7,7 +7,7 @@ trigger:
       - TapToPayExperiment/MobileApp
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: macOS-13
 
 jobs:
   - job: deploy_iOS
@@ -23,7 +23,6 @@ jobs:
       - task: UseNode@1
         inputs:
           version: "20.x"
-        displayName: "Install Node.js"
 
       - script: npm ci --legacy-peer-deps
         workingDirectory: TapToPayExperiment/MobileApp
@@ -40,3 +39,23 @@ jobs:
       - script: bundle install
         workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Install fastlane gems"
+
+      - bash: ci/scripts/import-certificate.sh
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Import signing certificate"
+        env:
+          IOS_DIST_SIGNING_KEY: $(IOS_DIST_SIGNING_KEY_SECRET)
+          IOS_DIST_SIGNING_KEY_PASSWORD: $(IOS_DIST_SIGNING_KEY_PASSWORD_SECRET)
+
+      - bash: ci/scripts/import-profile.sh
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Import provisioning profile"
+        env:
+          PROVISIONING_PROFILE_DATA: $(PROVISIONING_PROFILE_DATA_SECRET)
+
+      - script: bundle exec fastlane deploy
+        workingDirectory: ios
+        displayName: "Upload app to Test Flight"
+        env:
+          ASC_APPLE_ID: $(ASC_APPLE_ID_SECRET)
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(APPLE_APP_SPECIFIC_PASSWORD_SECRET)

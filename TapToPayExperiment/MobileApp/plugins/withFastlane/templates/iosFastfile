@@ -23,6 +23,11 @@ platform :ios do
       workspace: "{{workspace}}",
       scheme: "{{scheme}}",
       configuration: "{{configuration}}"
+      export_options: {
+        provisioningProfiles: {
+          "{{bundleIdentifier}}" => "{{provisioningProfile}}"
+        }
+      }
     )
     # upload_to_testflight(
     #   skip_waiting_for_build_processing: true,

@@ -55,6 +55,8 @@ const withFastlaneIos: ConfigPlugin = (config) => {
         workspace: `${app.name}.xcworkspace`,
         scheme: app.name,
         configuration: "Release",
+        bundleIdentifier: ios.bundleIdentifier,
+        provisioningProfile: ios.provisioningProfile,
       })
       fs.writeFileSync(path.join(destinationDirectory, "Fastfile"), fastFile)
 
