@@ -54,7 +54,7 @@ jobs:
           PROVISIONING_PROFILE_DATA: $(PROVISIONING_PROFILE_DATA_SECRET)
 
       - script: bundle exec fastlane deploy
-        workingDirectory: ios
+        workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Upload app to Test Flight"
         env:
           ASC_APPLE_ID: $(ASC_APPLE_ID_SECRET)
