@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - releases/*
+  paths:
+    include:
+    - TapToPayExperiment/MobileApp
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: deploy_iOS
+  displayName: Deploy iOS
+  steps:
+  - checkout: self
+
+  - task: UseNode@1
+    inputs:
+      version: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: pwd
+    displayName: 'Check working directory'
