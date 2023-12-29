@@ -15,7 +15,7 @@ jobs:
   steps:
   - checkout: self
 
-  - script: git switch $(Build.SourceBranch)
+  - script: git switch releases/$(Build.SourceBranchName)
     displayName: 'Checkout release branch'
 
   - task: UseNode@1
