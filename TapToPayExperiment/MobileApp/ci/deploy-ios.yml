@@ -25,6 +25,14 @@ jobs:
           version: "20.x"
         displayName: "Install Node.js"
 
+      - script: npm ci --legacy-peer-deps
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Install npm dependencies"
+
+      - script: npm run prebuild -- --no-install --platform ios
+        workingDirectory: TapToPayExperiment/MobileApp/ios
+        displayName: "Prebuild iOS project"
+
       - script: bundle install
         workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Install fastlane gems"
