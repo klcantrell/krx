@@ -15,7 +15,7 @@ resources:
     type: github
     endpoint: klcantrell (2)
     name: klcantrell/krx
-    ref: $(Build.SourceBranch)
+    ref: releases/$(Build.SourceBranchName)
 
 jobs:
 - job: deploy_iOS
