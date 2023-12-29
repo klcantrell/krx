@@ -30,7 +30,7 @@ jobs:
         displayName: "Install npm dependencies"
 
       - script: npm run prebuild -- --no-install --platform ios
-        workingDirectory: TapToPayExperiment/MobileApp/ios
+        workingDirectory: TapToPayExperiment/MobileApp
         displayName: "Prebuild iOS project"
 
       - script: bundle install
