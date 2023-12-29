@@ -26,5 +26,5 @@ jobs:
         displayName: "Install Node.js"
 
       - script: bundle install
-        workingDirectory: TapToPayExperiment/ios
+        workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Install fastlane gems"
