@@ -22,7 +22,7 @@ platform :ios do
     build_app(
       workspace: "{{workspace}}",
       scheme: "{{scheme}}",
-      configuration: "{{configuration}}"
+      configuration: "{{configuration}}",
       export_options: {
         provisioningProfiles: {
           "{{bundleIdentifier}}" => "{{provisioningProfile}}"
