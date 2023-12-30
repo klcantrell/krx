@@ -55,7 +55,7 @@ const withFastlaneIos: ConfigPlugin = (config) => {
         workspace: `${app.name}.xcworkspace`,
         project: `${app.name}.xcodeproj`,
         scheme: app.name,
-        configuration: "Release",
+        buildConfiguration: "Release",
         // TODO: make this configurable
         appleDeveloperTeam: "BMJG6U6BC7",
         bundleIdentifier: ios.bundleIdentifier,
