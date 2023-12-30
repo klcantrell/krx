@@ -71,7 +71,7 @@ jobs:
           git checkout main
           npm run bumpVersions -- ios
           git add versions.json
-          git commit -m "Bump iOS version" -m "[skip ci]"
+          git commit -m "[TapToPayExperiment] Bump iOS version" -m "[skip ci]"
           git pull --rebase
           git push
         workingDirectory: TapToPayExperiment/MobileApp
