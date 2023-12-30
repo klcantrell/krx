@@ -21,13 +21,18 @@ platform :ios do
     # increment_build_number(xcodeproj: "PelicanMobile.xcodeproj")
     update_code_signing_settings(
       use_automatic_signing: false,
-      path: "{{project}}",
+      path: "{{appName}}.xcodeproj",
       team_id: "{{appleDeveloperTeam}}",
       profile_name: "{{provisioningProfile}}",
       code_sign_identity: "iPhone Distribution"
     )
+    set_info_plist_value(
+      path: "{{appName}}/Info.plist",
+      key: "NSAppTransportSecurity",
+      value: "{ 'NSAllowsArbitraryLoads' => false }"
+    )
     build_app(
-      workspace: "{{workspace}}",
+      workspace: "{{appName}}.xcworkspace",
       scheme: "{{scheme}}",
       configuration: "{{buildConfiguration}}"
     )
