@@ -67,3 +67,14 @@ jobs:
           KEYSTORE_KEY_ALIAS: $(KEYSTORE_KEY_ALIAS_SECRET)
           KEYSTORE_KEY_PASSWORD: $(KEYSTORE_KEY_PASSWORD_SECRET)
           KEYSTORE_STORE_PASSWORD: $(KEYSTORE_STORE_PASSWORD_SECRET)
+
+      - script: |
+          git restore .
+          git checkout main
+          npm run bumpVersions -- android
+          git add versions.json
+          git commit -m "Bump Android version" -m "[skip ci]"
+          git pull --rebase
+          git push
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Bump version"
