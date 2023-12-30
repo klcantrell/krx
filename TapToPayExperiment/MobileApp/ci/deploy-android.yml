@@ -70,7 +70,10 @@ jobs:
           KEYSTORE_STORE_PASSWORD: $(KEYSTORE_STORE_PASSWORD_SECRET)
 
       - script: |
+          git config --global user.email "cantrellkalalau@gmail.com"
+          git config --global user.name "runner"
           git restore .
+          git reset --hard
           git checkout main
           npm run bumpVersions -- android
           git add versions.json

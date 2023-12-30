@@ -67,7 +67,10 @@ jobs:
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(APPLE_APP_SPECIFIC_PASSWORD_SECRET)
 
       - script: |
+          git config --global user.email "cantrellkalalau@gmail.com"
+          git config --global user.name "runner"
           git restore .
+          git reset --hard
           git checkout main
           npm run bumpVersions -- ios
           git add versions.json
