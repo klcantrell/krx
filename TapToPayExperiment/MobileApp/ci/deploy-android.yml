@@ -11,6 +11,7 @@ pool:
 
 jobs:
   - job: deploy_android
+    condition: false
     displayName: Deploy Android
     steps:
       - checkout: self

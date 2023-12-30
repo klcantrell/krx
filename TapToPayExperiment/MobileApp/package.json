@@ -28,6 +28,7 @@
     "bundle:web": "npx expo export --platform web",
     "serve:web": "npx server dist",
     "gen:brand": "ts-node scripts/applyAppBrand",
+    "bumpVersions": "ts-node scripts/bumpVersions",
     "gen:brand:dev": "source scripts/dev_env.sh && ts-node scripts/applyAppBrand",
     "prebuild:clean:dev": "source scripts/dev_env.sh && npm run gen:brand:dev && npx expo prebuild --clean",
     "prebuild:dev": "source scripts/dev_env.sh && npm run gen:brand:dev && npx expo prebuild",

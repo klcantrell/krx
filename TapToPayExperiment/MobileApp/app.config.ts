@@ -15,9 +15,10 @@ require("ts-node/register")
 module.exports = ({ config, projectRoot }: ConfigContext): Partial<ExpoConfig> => {
   const plugins = config.plugins ?? []
 
+  plugins.push(require("./plugins/withAppVersions").withAppVersions)
   plugins.push(require("./plugins/withSplashScreen").withSplashScreen)
   plugins.push([require("./plugins/withAppBrand").withAppBrand, { projectRoot }])
-  plugins.push([require("./plugins/withFastlane").withFastlane])
+  plugins.push(require("./plugins/withFastlane").withFastlane)
 
   if (process.env.APP_ENV === "development") {
     plugins.push(require("./plugins/withAndroidNetworkConfig").withAndroidNetworkConfig)

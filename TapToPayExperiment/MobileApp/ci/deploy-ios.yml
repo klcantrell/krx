@@ -11,10 +11,11 @@ pool:
 
 jobs:
   - job: deploy_iOS
-    condition: false
     displayName: Deploy iOS
     steps:
       - checkout: self
+        persistCredentials: true
+        clean: true
 
       - script: |
           git fetch --all
@@ -64,3 +65,14 @@ jobs:
         env:
           ASC_APPLE_ID: $(ASC_APPLE_ID_SECRET)
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(APPLE_APP_SPECIFIC_PASSWORD_SECRET)
+
+      - script: |
+          git restore .
+          git checkout main
+          npm run bumpVersions -- ios
+          git add versions.json
+          git commit -m "Bump iOS version" -m "[skip ci]"
+          git pull --rebase
+          git push
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Bump version"
