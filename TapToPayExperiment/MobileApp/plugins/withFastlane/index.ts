@@ -53,6 +53,7 @@ const withFastlaneIos: ConfigPlugin = (config) => {
       )
       const fastFile = fastFileTemplate({
         workspace: `${app.name}.xcworkspace`,
+        project: `${app.name}.xcodeproj`,
         scheme: app.name,
         configuration: "Release",
         // TODO: make this configurable
