@@ -23,7 +23,7 @@ platform :android do
       task: "clean bundle",
       build_type: "Release",
       properties: {
-        "android.injected.signing.store.file" => "{{keystoreName}}",
+        "android.injected.signing.store.file" => ENV['KEYSTORE_PATH'] + "/{{keystoreName}}",
         "android.injected.signing.store.password" => ENV['KEYSTORE_STORE_PASSWORD'],
         "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
         "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],

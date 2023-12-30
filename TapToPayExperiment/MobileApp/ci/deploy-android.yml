@@ -62,6 +62,7 @@ jobs:
         workingDirectory: TapToPayExperiment/MobileApp/android
         displayName: "Upload app to Google Play"
         env:
+          KEYSTORE_PATH: $(Build.SourcesDirectory)/TapToPayExperiment/MobileApp/android/app
           KEYSTORE_KEY_ALIAS: $(KEYSTORE_KEY_ALIAS_SECRET)
           KEYSTORE_KEY_PASSWORD: $(KEYSTORE_KEY_PASSWORD_SECRET)
           KEYSTORE_STORE_PASSWORD: $(KEYSTORE_STORE_PASSWORD_SECRET)
