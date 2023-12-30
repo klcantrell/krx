@@ -11,6 +11,7 @@ pool:
 
 jobs:
   - job: deploy_iOS
+    condition: false
     displayName: Deploy iOS
     steps:
       - checkout: self

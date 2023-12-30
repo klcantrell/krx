@@ -1,0 +1,41 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a new build to the Google Play"
+  lane :deploy do
+    # android_set_version_code(gradle_file: "app/build.gradle")
+    gradle(
+      task: "clean bundle",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file" => "{{keystoreName}}",
+        "android.injected.signing.store.password" => ENV['KEYSTORE_STORE_PASSWORD'],
+        "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
+        "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
+      }
+    )
+    # upload_to_play_store(track: "internal", release_status: "draft")
+    # git_commit(path: "app/build.gradle", message: "Android version bump [skip ci]")
+    # reset_git_repo(
+    #   force: true,
+    #   disregard_gitignore: false
+    # )
+    # git_pull(rebase: true)
+    # push_to_git_remote
+  end
+end

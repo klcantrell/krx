@@ -1,19 +1,68 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- main
+  branches:
+    include:
+      - releases/*
+  paths:
+    include:
+      - TapToPayExperiment/MobileApp
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+  - job: deploy_android
+    condition: false
+    displayName: Deploy Android
+    steps:
+      - checkout: self
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+      - script: |
+          git fetch --all
+          git switch releases/$(Build.SourceBranchName)
+        displayName: "Checkout release branch"
+
+      - task: UseNode@1
+        inputs:
+          version: "20.x"
+
+      - script: npm ci --legacy-peer-deps
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Install npm dependencies"
+
+      - script: npm run prebuild -- --no-install --platform ios
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Prebuild iOS project"
+
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: "11"
+          jdkArchitectureOption: "x64"
+          jdkSourceOption: "PreInstalled"
+
+      - task: UseRubyVersion@0
+        inputs:
+          versionSpec: "3.x"
+
+      - script: bundle install
+        workingDirectory: TapToPayExperiment/MobileApp/android
+        displayName: "Install fastlane gems"
+
+      - bash: ci/scripts/import-play-credentials.sh
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Import Play credentials"
+        env:
+          PLAY_CREDENTIALS: $(PLAY_CREDENTIALS_SECRET)
+
+      - bash: ci/scripts/import-keystores.sh
+        workingDirectory: TapToPayExperiment/MobileApp
+        displayName: "Import keystores"
+        env:
+          KEYSTORE_DATA: $(KEYSTORE_DATA_SECRET)
+
+      - script: bundle exec fastlane deploy
+        workingDirectory: TapToPayExperiment/MobileApp/android
+        displayName: "Upload app to Google Play"
+        env:
+          KEYSTORE_KEY_ALIAS: $(KEYSTORE_KEY_ALIAS_SECRET)
+          KEYSTORE_KEY_PASSWORD: $(KEYSTORE_KEY_PASSWORD_SECRET)
+          KEYSTORE_STORE_PASSWORD: $(KEYSTORE_STORE_PASSWORD_SECRET)
