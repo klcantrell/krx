@@ -19,15 +19,12 @@ platform :ios do
   desc "Push a new build to TestFlight"
   lane :deploy do
     # increment_build_number(xcodeproj: "PelicanMobile.xcodeproj")
-    update_project_provisioning(
-      xcodeproj: "{{project}}",
-      profile: "~/Library/MobileDevice/Provisioning\ Profiles/{{provisioningProfile}}.mobileprovision",
-      build_configuration: "{{configuration}}",
-      code_signing_identity: "iPhone Distribution"
-    )
-    update_project_team(
+    update_code_signing_settings(
+      use_automatic_signing: false,
       path: "{{project}}",
-      teamid: "{{appleDeveloperTeam}}"
+      team_id: "{{appleDeveloperTeam}}",
+      profile_name: "{{provisioningProfile}}",
+      code_sign_identity: "iPhone Distribution"
     )
     build_app(
       workspace: "{{workspace}}",
