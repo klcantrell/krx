@@ -66,17 +66,19 @@ const SetupTerminal = (props: { onConnected: () => void }) => {
 
   useEffect(() => {
     async function initializeStripe() {
-      const { error: androidPermissionsError } = await requestNeededAndroidPermissions({
-        accessFineLocation: {
-          title: "Location Permission",
-          message: "Stripe Terminal needs access to your location",
-          buttonPositive: "Accept",
-        },
-      })
+      if (Platform.OS === "android") {
+        const { error: androidPermissionsError } = await requestNeededAndroidPermissions({
+          accessFineLocation: {
+            title: "Location Permission",
+            message: "Stripe Terminal needs access to your location",
+            buttonPositive: "Accept",
+          },
+        })
 
-      if (androidPermissionsError) {
-        console.error("Something went wrong retrieving Android permissions")
-        return
+        if (androidPermissionsError) {
+          console.error("Something went wrong retrieving Android permissions")
+          return
+        }
       }
 
       console.log("initializing Stripe!")
