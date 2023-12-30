@@ -28,9 +28,9 @@ jobs:
         workingDirectory: TapToPayExperiment/MobileApp
         displayName: "Install npm dependencies"
 
-      - script: npm run prebuild -- --no-install --platform ios
+      - script: npm run prebuild -- --no-install --platform android
         workingDirectory: TapToPayExperiment/MobileApp
-        displayName: "Prebuild iOS project"
+        displayName: "Prebuild Android project"
 
       - task: JavaToolInstaller@0
         inputs:
