@@ -38,7 +38,7 @@ function bumpVersions() {
   }
 
   const destinationPath = path.join(__dirname, "..", "versions.json")
-  fs.writeFileSync(`${JSON.stringify(newVersions, null, 2)}\n`, destinationPath)
+  fs.writeFileSync(destinationPath, `${JSON.stringify(newVersions, null, 2)}\n`)
 }
 
 bumpVersions()
