@@ -32,6 +32,10 @@ jobs:
         workingDirectory: TapToPayExperiment/MobileApp
         displayName: "Prebuild iOS project"
 
+      - script: pod install
+        workingDirectory: TapToPayExperiment/MobileApp/ios
+        displayName: "Install Pods"
+
       - task: UseRubyVersion@0
         inputs:
           versionSpec: "3.x"
