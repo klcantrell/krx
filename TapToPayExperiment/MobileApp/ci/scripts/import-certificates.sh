@@ -15,3 +15,4 @@ security import signingCertificate.p12 \
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 security list-keychains -s build.keychain # triggers an update of the keychain list. see https://github.com/Apple-Actions/import-codesign-certs/blob/5565bb656f60c98c8fc515f3444dd8db73545dc2/src/security.ts#L50-L64
+security default-keychain -s build.keychain # without this, build freezes waiting for a keychain password

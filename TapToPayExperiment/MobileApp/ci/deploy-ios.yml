@@ -44,16 +44,16 @@ jobs:
         workingDirectory: TapToPayExperiment/MobileApp/ios
         displayName: "Install fastlane gems"
 
-      - bash: ci/scripts/import-certificate.sh
+      - bash: ci/scripts/import-certificates.sh
         workingDirectory: TapToPayExperiment/MobileApp
-        displayName: "Import signing certificate"
+        displayName: "Import signing certificates"
         env:
           IOS_DIST_SIGNING_KEY: $(IOS_DIST_SIGNING_KEY_SECRET)
           IOS_DIST_SIGNING_KEY_PASSWORD: $(IOS_DIST_SIGNING_KEY_PASSWORD_SECRET)
 
-      - bash: ci/scripts/import-profile.sh
+      - bash: ci/scripts/import-profiles.sh
         workingDirectory: TapToPayExperiment/MobileApp
-        displayName: "Import provisioning profile"
+        displayName: "Import provisioning profiles"
         env:
           PROVISIONING_PROFILE_DATA: $(PROVISIONING_PROFILE_DATA_SECRET)
 
