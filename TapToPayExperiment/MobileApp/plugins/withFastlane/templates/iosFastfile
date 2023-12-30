@@ -23,6 +23,7 @@ platform :ios do
       workspace: "{{workspace}}",
       scheme: "{{scheme}}",
       configuration: "{{configuration}}",
+      export_team_id: "{{appleDeveloperTeam}}",
       export_options: {
         provisioningProfiles: {
           "{{bundleIdentifier}}" => "{{provisioningProfile}}"
