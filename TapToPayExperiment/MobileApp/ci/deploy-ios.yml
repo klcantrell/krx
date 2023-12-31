@@ -72,10 +72,10 @@ jobs:
           git restore .
           git reset --hard
           git checkout main
+          git pull --rebase
           npm run bumpVersions -- ios
           git add versions.json
           git commit -m "[TapToPayExperiment] Bump iOS version" -m "[skip ci]"
-          git pull --rebase
           git push
         workingDirectory: TapToPayExperiment/MobileApp
         displayName: "Bump version"
