@@ -17,14 +17,12 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
   const terminalTokenQuery = useQuery({
     queryKey: ["terminalToken"],
     queryFn: async () => {
-      const response = await fetch(
-        `http://${Platform.OS === "android" ? "10.0.2.2" : "192.168.4.20"}:3000/connection_token`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const domain = Platform.OS === "android" && __DEV__ ? "10.0.2.2" : "192.168.4.20"
+      const response = await fetch(`http://${domain}:3000/connection_token`, {
+        headers: {
+          "Content-Type": "application/json",
         },
-      )
+      })
       const data = (await response.json()) as { secret: string }
       return data
     },
