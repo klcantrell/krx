@@ -57,6 +57,7 @@ const withCustomMainApplication: ConfigPlugin = (config) => {
     const mainApplication = AndroidConfig.Manifest.getMainApplicationOrThrow(modConfig.modResults)
 
     mainApplication.$["android:networkSecurityConfig"] = "@xml/network_security_config"
+    mainApplication.$["android:usesCleartextTraffic"] = "true" // TEMPORARY - adding this in for debugging
 
     return modConfig
   })
