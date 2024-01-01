@@ -18,14 +18,18 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
     queryKey: ["terminalToken"],
     queryFn: async () => {
       const domain = Platform.OS === "android" && __DEV__ ? "10.0.2.2" : "192.168.4.20"
-      Alert.alert(`Requesting connection token from domain ${domain}`) // TODO: remove!
-      const response = await fetch(`http://${domain}:3000/connection_token`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      const data = (await response.json()) as { secret: string }
-      return data
+      try {
+        const response = await fetch(`http://${domain}:3000/connection_token`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        const data = (await response.json()) as { secret: string }
+        return data
+      } catch (error) {
+        Alert.alert("Error", JSON.stringify(error))
+        throw error
+      }
     },
   })
   const [terminalReady, setTerminalReady] = useState(false)
