@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react"
-import { ActivityIndicator, Platform, TextStyle, ViewStyle } from "react-native"
+import { ActivityIndicator, Alert, Platform, TextStyle, ViewStyle } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import {
   PaymentIntent,
@@ -18,6 +18,7 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
     queryKey: ["terminalToken"],
     queryFn: async () => {
       const domain = Platform.OS === "android" && __DEV__ ? "10.0.2.2" : "192.168.4.20"
+      Alert.alert(`Requesting connection token from domain ${domain}`) // TODO: remove!
       const response = await fetch(`http://${domain}:3000/connection_token`, {
         headers: {
           "Content-Type": "application/json",
