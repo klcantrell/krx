@@ -20,9 +20,10 @@ module.exports = ({ config, projectRoot }: ConfigContext): Partial<ExpoConfig> =
   plugins.push([require("./plugins/withAppBrand").withAppBrand, { projectRoot }])
   plugins.push(require("./plugins/withFastlane").withFastlane)
 
-  if (process.env.APP_ENV === "development") {
+  // TODO: uncomment these once debugging is done
+  // if (process.env.APP_ENV === "development") {
     plugins.push(require("./plugins/withAndroidNetworkConfig").withAndroidNetworkConfig)
-  }
+  // }
 
   return {
     ...config,

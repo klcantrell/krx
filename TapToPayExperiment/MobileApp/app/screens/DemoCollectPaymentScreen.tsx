@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react"
-import { ActivityIndicator, Alert, Platform, TextStyle, ViewStyle } from "react-native"
+import { ActivityIndicator, Platform, TextStyle, ViewStyle } from "react-native"
 import { useQuery } from "@tanstack/react-query"
 import {
   PaymentIntent,
@@ -18,18 +18,13 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
     queryKey: ["terminalToken"],
     queryFn: async () => {
       const domain = Platform.OS === "android" && __DEV__ ? "10.0.2.2" : "192.168.4.20"
-      try {
-        const response = await fetch(`http://${domain}:3000/connection_token`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        const data = (await response.json()) as { secret: string }
-        return data
-      } catch (error) {
-        Alert.alert("Error", JSON.stringify(error))
-        throw error
-      }
+      const response = await fetch(`http://${domain}:3000/connection_token`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      const data = (await response.json()) as { secret: string }
+      return data
     },
   })
   const [terminalReady, setTerminalReady] = useState(false)

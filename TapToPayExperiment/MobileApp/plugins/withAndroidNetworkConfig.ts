@@ -16,6 +16,7 @@ const NETWORK_CONFIG_FILE_CONTENT = `<?xml version="1.0" encoding="utf-8"?>
         <!-- If you are running on a device insert your computer IP -->
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">192.168.4.20</domain>
     </domain-config>
 
     <base-config cleartextTrafficPermitted="false">
@@ -57,7 +58,6 @@ const withCustomMainApplication: ConfigPlugin = (config) => {
     const mainApplication = AndroidConfig.Manifest.getMainApplicationOrThrow(modConfig.modResults)
 
     mainApplication.$["android:networkSecurityConfig"] = "@xml/network_security_config"
-    mainApplication.$["android:usesCleartextTraffic"] = "true" // TEMPORARY - adding this in for debugging
 
     return modConfig
   })
