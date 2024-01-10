@@ -1,3 +1,5 @@
+import "expo-dev-client"
+
 import App from "./app/app"
 import React from "react"
 import * as SplashScreen from "expo-splash-screen"
