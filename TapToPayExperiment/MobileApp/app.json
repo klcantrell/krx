@@ -37,6 +37,9 @@
       "icon": "./assets/images/app-icon-ios.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.taptopayexperiment.dev",
+      "entitlements": {
+        "com.apple.developer.proximity-reader.payment.acceptance": "true"
+      },
       "splash": {
         "image": "./assets/images/splash-logo-ios-mobile.png",
         "tabletImage": "./assets/images/splash-logo-ios-tablet.png",

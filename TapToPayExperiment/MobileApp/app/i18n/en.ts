@@ -44,9 +44,9 @@ const en = {
     hint: "Hint: you can use any email address and your favorite password :)",
   },
   demoNavigator: {
-    componentsTab: "Components",
+    tapToPayTab: "Tap Pay",
     debugTab: "Debug",
-    communityTab: "Payment",
+    paymentTab: "Payment",
     podcastListTab: "Podcast",
   },
   demoCollectPaymentScreen: {

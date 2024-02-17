@@ -45,9 +45,9 @@ const ko: Translations = {
     hint: "힌트: 가장 좋아하는 암호와 아무런 아무 이메일 주소나 사용할 수 있어요 :)",
   },
   demoNavigator: {
-    componentsTab: "컴포넌트",
+    tapToPayTab: "demoNavigator.tapToPayTab",
     debugTab: "디버그",
-    communityTab: "커뮤니티",
+    paymentTab: "demoNavigator.paymentTab",
     podcastListTab: "팟캐스트",
   },
   demoCollectPaymentScreen: {

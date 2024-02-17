@@ -45,9 +45,9 @@ const ar: Translations = {
     hint: "(: تلميح: يمكنك استخدام اي عنوان بريد الكتروني وكلمة السر المفضلة لديك",
   },
   demoNavigator: {
-    componentsTab: "عناصر",
+    tapToPayTab: "demoNavigator.tapToPayTab",
     debugTab: "تصحيح",
-    communityTab: "واصل اجتماعي",
+    paymentTab: "demoNavigator.paymentTab",
     podcastListTab: "البودكاست",
   },
   demoCollectPaymentScreen: {

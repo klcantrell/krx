@@ -5,25 +5,25 @@ import {
   PaymentIntent,
   Reader,
   StripeTerminalProvider,
-  useStripeTerminal,
   requestNeededAndroidPermissions,
+  useStripeTerminal,
 } from "@stripe/stripe-terminal-react-native"
 
 import { Button, Screen, Text } from "../components"
 import { DemoTabScreenProps } from "../navigators/DemoNavigator"
 import { spacing } from "../theme"
 
-export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment">> = (_props) => {
+export const DemoTapToPayScreen: FC<DemoTabScreenProps<"DemoTapToPay">> = (_props) => {
   const terminalTokenQuery = useQuery({
     queryKey: ["terminalToken"],
     queryFn: async () => {
-      const domain = Platform.OS === "android" && __DEV__ ? "10.0.2.2" : "192.168.4.62"
+      const domain = Platform.OS === "android" && __DEV__ ? "localhost" : "192.168.4.62"
       const response = await fetch(`http://${domain}:3000/connection_token`, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      const data = (await response.json()) as { secret: string }
+      const data = (await response.json()) as { secret: string; location: string }
       return data
     },
   })
@@ -45,7 +45,10 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
           {terminalReady ? (
             <CollectPayment />
           ) : (
-            <SetupTerminal onConnected={() => setTerminalReady(true)} />
+            <SetupTerminal
+              terminalLocation={terminalTokenQuery.data.location}
+              onConnected={() => setTerminalReady(true)}
+            />
           )}
         </StripeTerminalProvider>
       )}
@@ -53,7 +56,7 @@ export const DemoCollectPaymentScreen: FC<DemoTabScreenProps<"DemoCollectPayment
   )
 }
 
-const SetupTerminal = (props: { onConnected: () => void }) => {
+const SetupTerminal = (props: { onConnected: () => void; terminalLocation: string }) => {
   const [sdkInitialized, setSdkInitialized] = useState(false)
 
   const [terminalConnected, setTerminalConnected] = useState(false)
@@ -101,38 +104,36 @@ const SetupTerminal = (props: { onConnected: () => void }) => {
   }, [sdkInitialized, stripeTerminal.initialize, stripeTerminal.disconnectReader])
 
   useEffect(() => {
-    async function discoverBluetoothReader() {
-      console.log("discovering bluetooth readers")
+    async function discoverReaders() {
+      console.log("discovering local mobile readers")
       const discoverResult = await stripeTerminal.discoverReaders({
-        discoveryMethod: "bluetoothScan",
-        simulated: true,
+        discoveryMethod: "localMobile",
+        simulated: Platform.OS === "android" && __DEV__,
       })
       if (discoverResult.error) {
-        console.error("Something went wrong discovering bluetooth readers", discoverResult.error)
+        console.error("Something went wrong discovering local mobile readers", discoverResult.error)
       }
     }
 
     if (sdkInitialized && !terminalConnected && !scanningForBluetoothReader.current) {
       scanningForBluetoothReader.current = true
-      discoverBluetoothReader()
+      discoverReaders()
     }
   }, [sdkInitialized, terminalConnected, stripeTerminal.discoverReaders])
 
   useEffect(() => {
-    async function connectToBluetoothReader(reader: Reader.Type) {
-      console.log("connecting to bluetooth reader")
-      const connectResult = await stripeTerminal.connectBluetoothReader({
+    async function connectToLocalMobileReader(reader: Reader.Type) {
+      console.log("connecting to local mobile reader")
+      const connectResult = await stripeTerminal.connectLocalMobileReader({
         reader,
-        locationId: reader.locationId,
+        locationId: props.terminalLocation,
       })
       if (connectResult.error) {
-        console.error("Something went wrong connecting to bluetooth reader", connectResult.error)
+        console.error("Something went wrong connecting to local mobile reader", connectResult.error)
         return
       }
 
-      console.log("Connected to bluetooth reader", connectResult.reader)
-
-      await stripeTerminal.setSimulatedCard("4242424242424242")
+      console.log("Connected to local mobile reader", connectResult.reader)
 
       setTerminalConnected(true)
       scanningForBluetoothReader.current = false
@@ -146,7 +147,7 @@ const SetupTerminal = (props: { onConnected: () => void }) => {
       !connectingToBluetoothReader.current
     ) {
       connectingToBluetoothReader.current = true
-      connectToBluetoothReader(stripeTerminal.discoveredReaders[0])
+      connectToLocalMobileReader(stripeTerminal.discoveredReaders[0])
     }
   }, [
     sdkInitialized,
@@ -229,8 +230,10 @@ const CollectPayment = () => {
     }
 
     if (paymentIntent && !paymentCollected && !collectingPayment.current) {
-      collectingPayment.current = true
-      collectPayment(paymentIntent)
+      setTimeout(() => {
+        collectingPayment.current = true
+        collectPayment(paymentIntent)
+      }, 2000)
     }
   }, [paymentIntent, paymentCollected, stripeTerminal.collectPaymentMethod])
 
@@ -239,7 +242,7 @@ const CollectPayment = () => {
       const confirmPaymentResponse = await stripeTerminal.confirmPaymentIntent(paymentIntentResult)
 
       if (confirmPaymentResponse.error) {
-        console.error("Something went wrong confirming payment")
+        console.error("Something went wrong confirming payment", confirmPaymentResponse.error)
         return
       }
 

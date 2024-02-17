@@ -46,9 +46,9 @@ const fr: Translations = {
     hint: "Astuce : vous pouvez utiliser n'importe quelle adresse e-mail et votre mot de passe préféré :)",
   },
   demoNavigator: {
-    componentsTab: "Composants",
+    tapToPayTab: "demoNavigator.tapToPayTab",
     debugTab: "Débogage",
-    communityTab: "Communauté",
+    paymentTab: "demoNavigator.paymentTab",
     podcastListTab: "Podcasts",
   },
   demoCollectPaymentScreen: {

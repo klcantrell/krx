@@ -15,6 +15,7 @@ app.get("/connection_token", async (c) => {
   const token = await stripe.terminal.connectionTokens.create();
   return c.json({
     secret: token.secret,
+    location: env.STRIPE_TERMINAL_LOCATION,
   });
 });
 
@@ -29,5 +30,6 @@ export default serveOptions;
 declare module "bun" {
   interface Env {
     STRIPE_SECRET: string;
+    STRIPE_TERMINAL_LOCATION: string;
   }
 }

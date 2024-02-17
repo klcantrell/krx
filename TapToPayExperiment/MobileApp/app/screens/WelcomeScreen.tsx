@@ -22,7 +22,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = (_props) => {
   const logout = useStore((state) => state.logout)
 
   function goNext() {
-    navigation.navigate("Demo", { screen: "DemoShowroom", params: {} })
+    navigation.navigate("Demo", { screen: "DemoTapToPay" })
   }
 
   useHeader(
